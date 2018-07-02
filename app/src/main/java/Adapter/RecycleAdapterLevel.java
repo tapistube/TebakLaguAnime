@@ -75,11 +75,15 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
 
         holder.gmbrList.setOnClickListener(clicklistener);
         holder.txtNamaLevel.setOnClickListener(clicklistener);
+        holder.cardItem.setOnClickListener(clicklistener);
+        holder.relaCard.setOnClickListener(clicklistener);
 
 
 
         holder.gmbrList.setTag(holder);
         holder.txtNamaLevel.setTag(holder);
+        holder.relaCard.setTag(holder);
+        holder.cardItem.setTag(holder);
 
     }
 

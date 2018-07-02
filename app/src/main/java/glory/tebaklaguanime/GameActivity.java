@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import Kelas.DBAdapter;
 import Kelas.Quiz;
+import Kelas.User;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -50,6 +52,10 @@ public class GameActivity extends AppCompatActivity {
     private List<Quiz> mlistQuiz;
     public static MediaPlayer mp,mpKoreksi;
     DialogInterface.OnClickListener listener;
+
+    public static User mUser;
+    public static List<User> mlistUser;
+    protected Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,11 @@ public class GameActivity extends AppCompatActivity {
         mDB = DBAdapter.getInstance(getApplicationContext());
         mlistQuiz = mDB.getAllSoal();
         Collections.shuffle(mlistQuiz);
+
+        mlistUser = mDB.getDataUser();
+        mUser = mlistUser.get(0);
+        int coinNow = mUser.getCoin();
+        txtCoin.setText(String.valueOf(coinNow));
 
         mAnimation = ObjectAnimator.ofInt(progressBar,"progress",0,100);
         mAnimation.setDuration(duration);
@@ -263,7 +274,7 @@ public class GameActivity extends AppCompatActivity {
             nyawa = nyawa - 1;
             suaraJwbSalah();
         }
-        txtSkor.setText("Skor :"+String.valueOf(skor));
+        txtSkor.setText("Skor : "+String.valueOf(skor));
 
         if (nyawa == 2){
             imgHeart3.setVisibility(View.INVISIBLE);

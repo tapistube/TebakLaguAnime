@@ -110,18 +110,23 @@
         android:textColor="#FFFF"
         android:textStyle="bold"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/buttonGame"
-        android:text="Share"
-        android:padding="5dp"
-        android:drawableLeft="@drawable/share"
-        android:drawableStart="@drawable/share"
-        android:layout_below="@+id/txtB"
-        android:layout_marginTop="5dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/btnShare"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/buttonGame"
+            android:layout_marginTop="15dp"
+            android:text="Share"
+            android:layout_below="@+id/txtB"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:layout_weight="0.3"
+            android:layout_marginRight="15dp"
+            android:drawableLeft="@drawable/share"
+            android:drawableStart="@drawable/share"
+            android:id="@+id/btnShare"/>
+
+
 
 
 </RelativeLayout>

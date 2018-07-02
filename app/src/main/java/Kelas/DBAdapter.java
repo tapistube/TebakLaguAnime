@@ -14,9 +14,11 @@ import java.util.List;
  */
 public class DBAdapter extends SQLiteAssetHelper {
 
-    private static final String DB_NAME                 = "db_quiz_ver4";
+    private static final String DB_NAME                 = "db_quiz_ver4_rev2";
     private static final int        DB_VER                  = 1;
     public static final String TABLE_SOAL              = "tb_soal";
+    public static final String TABLE_USER              = "tb_user";
+    public static final String TABLE_LEVEL              = "tb_level";
     public static final String COL_SOAL_ID             = "id";
     public static final String COL_SOAL_SOAL           = "soal";
     public static final String COL_SOAL_JAWABAN_A      = "jawaban_a";
@@ -25,6 +27,16 @@ public class DBAdapter extends SQLiteAssetHelper {
     public static final String COL_SOAL_JAWABAN_D      = "jawaban_d";
     public static final String COL_SOAL_JAWABAN_BENAR  = "jawaban_benar";
 
+    //tb user
+    public static final String COL_NAMA           = "nama";
+    public static final String COL_COIN           = "coin";
+    public static final String COL_RANK           = "rank";
+    public static final String COL_FREECOIN           = "free_coin";
+    public static final String COL_EXP           = "exp";
+
+    //tb_level
+    public static final String COL_WOLF           = "wolf";
+    public static final String COL_TIGER           = "tiger";
 
     public static DBAdapter        dbInstance;
     public static SQLiteDatabase db;
@@ -121,6 +133,39 @@ public class DBAdapter extends SQLiteAssetHelper {
         }
 
         return listSoal;
+    }
+
+    //method mengambil data user
+    public List<User> getDataUser(){
+
+        List<User> listUser = new ArrayList<User>();
+
+        Cursor cursor = db.query(TABLE_USER,new String[]{
+
+                COL_NAMA,
+                COL_COIN,
+                COL_RANK,
+                COL_FREECOIN,
+                COL_EXP
+        },null,null,null,null,null);//kenapa ada 5 null ya ?
+
+        if (cursor.moveToFirst()){
+
+
+            do {
+                User user = new User();
+
+                user.setNama(cursor.getString(cursor.getColumnIndexOrThrow(COL_NAMA)));
+                user.setCoin(cursor.getInt(cursor.getColumnIndexOrThrow(COL_COIN)));
+                user.setRank(cursor.getInt(cursor.getColumnIndexOrThrow(COL_RANK)));
+                user.setFree_coin(cursor.getString(cursor.getColumnIndexOrThrow(COL_FREECOIN)));
+                user.setExp(cursor.getInt(cursor.getColumnIndexOrThrow(COL_EXP)));
+
+                listUser.add(user);
+            }while (cursor.moveToNext());
+        }
+
+        return listUser;
     }
 
 

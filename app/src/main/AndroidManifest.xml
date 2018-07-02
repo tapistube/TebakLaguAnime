@@ -3,7 +3,8 @@
     package="glory.tebaklaguanime">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -12,9 +13,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
+       <!-- <provider android:authorities="com.facebook.app.FacebookContentProvider480851635702142"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" /> -->
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.mydomain.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+
+        </provider>
+
         <activity
             android:name=".MainActivity"
-            android:label="Home"
+            android:label="Tebak Lagu Anime"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +53,18 @@
         <activity
             android:name=".ResultActivity"
             android:label="Result"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" /> <!-- Send
+         action required to display activity in share list -->
+                <category android:name="android.intent.category.DEFAULT" /> <!--
+          Make activity default to launch -->
+                <!-- Mime type i.e. what can be shared with this activity only image and text -->
+                <data android:mimeType="image/*" />
+                <data android:mimeType="text/*" />
+            </intent-filter>
+
+        </activity >
         <activity android:name=".AchievementActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

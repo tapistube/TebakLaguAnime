@@ -17,7 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/unguMuda"
-        android:clickable="true">
+        android:clickable="true"
+        android:id="@+id/relaCard">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_iconlist"
