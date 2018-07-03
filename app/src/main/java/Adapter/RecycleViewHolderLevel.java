@@ -13,8 +13,8 @@ import glory.tebaklaguanime.R;
  */
 public class RecycleViewHolderLevel extends RecyclerView.ViewHolder {
 
-    public TextView txtNamaLevel;
-    public ImageView gmbrList;
+    public TextView txtNamaLevel,txtHargaCoin;
+    public ImageView gmbrList,imgLock,imgCoin;
     public CardView cardItem;
     public RelativeLayout relaCard;
 
@@ -23,9 +23,12 @@ public class RecycleViewHolderLevel extends RecyclerView.ViewHolder {
         super(itemView);
 
         txtNamaLevel = (TextView) itemView.findViewById(R.id.txt_namaLevel);
+        txtHargaCoin = (TextView) itemView.findViewById(R.id.txtHargaCoin);
         gmbrList = (ImageView) itemView.findViewById(R.id.img_iconlist);
         cardItem = (CardView) itemView.findViewById(R.id.cardlist_item);
         relaCard = (RelativeLayout) itemView.findViewById(R.id.relaCard);
+        imgLock = (ImageView) itemView.findViewById(R.id.img_lock);
+        imgCoin = (ImageView) itemView.findViewById(R.id.imgCoin);
 
 
     }

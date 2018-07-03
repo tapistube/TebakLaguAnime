@@ -27,6 +27,14 @@
             android:paddingTop="16dp"
             android:src="@drawable/icon_utama" />
 
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/img_lock"
+            android:paddingTop="13dp"
+            android:src="@drawable/gembok2"
+            android:visibility="visible"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -43,7 +51,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/txt_namaLevel"
                     android:layout_width="wrap_content"
@@ -53,6 +61,37 @@
                     android:textColor="#FFFF"
                     android:textSize="20sp"
                     android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:id="@+id/imgCoin"
+                        android:visibility="visible"
+                        android:src="@drawable/coin"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="100"
+                        android:visibility="visible"
+                        android:id="@+id/txtHargaCoin"
+                        android:layout_marginTop="5dp"
+                        android:textColor="#FFFF"
+                        android:textSize="18sp"/>
+
+                </LinearLayout>
 
             </RelativeLayout>
 

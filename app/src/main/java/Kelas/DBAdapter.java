@@ -168,5 +168,31 @@ public class DBAdapter extends SQLiteAssetHelper {
         return listUser;
     }
 
+    public List<TingkatKesulitan> getDataLevel(){
+
+        List<TingkatKesulitan> listLevel = new ArrayList<TingkatKesulitan>();
+
+        Cursor cursor = db.query(TABLE_LEVEL,new String[]{
+
+                COL_WOLF,
+                COL_TIGER
+        },null,null,null,null,null);//kenapa ada 5 null ya ?
+
+        if (cursor.moveToFirst()){
+
+
+            do {
+                TingkatKesulitan level = new TingkatKesulitan();
+
+                level.setWolf(cursor.getString(cursor.getColumnIndexOrThrow(COL_WOLF)));
+                level.setTiger(cursor.getString(cursor.getColumnIndexOrThrow(COL_TIGER)));
+
+                listLevel.add(level);
+            }while (cursor.moveToNext());
+        }
+
+        return listLevel;
+    }
+
 
 }

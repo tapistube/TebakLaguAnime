@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnPlay = (Button) findViewById(R.id.btnPlay);
         btnExit = (Button) findViewById(R.id.btnExit);
-        txtCoin = (TextView) findViewById(R.id.txtCoin);
+        txtCoin = (TextView) findViewById(R.id.txtHargaCoin);
         clickSound = MediaPlayer.create(MainActivity.this,R.raw.pop);
         imgAchievement = (ImageView) findViewById(R.id.imgAchievement);
 

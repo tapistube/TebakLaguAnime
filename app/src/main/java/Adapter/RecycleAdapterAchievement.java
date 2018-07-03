@@ -31,12 +31,13 @@ public class RecycleAdapterAchievement extends RecyclerView.Adapter<RecycleViewH
 
 
     //dekalrasi buat List nya
-    String[] namaRank ={"Normies","Anime Lover","Otaku","Wibuu","Wibu Psikopat","Wibu Ngidol","Mastah Wibu"};
+    String[] namaRank ={"Normies","Adventurer","Captain","Hero","Shichibukai","Yonkou","KING"};
 
-    String[] exp={"1.000","2.000","3.500","5.500","8.500","12000","16.000"};
+    String[] exp={"1.000","2.000","3.500","5.500","8.500","12.000","16.000"};
 
-    int [] resDoa = {R.drawable.normies,R.drawable.anime_lover,R.drawable.otaku,R.drawable.wibu,R.drawable.wubu_psikopat,
-                    R.drawable.wibu_ngidol,R.drawable.mastah_wibu};
+    int [] resDoa = {R.drawable.icon_normies,R.drawable.icon_adventurer,R.drawable.icon_captain,
+            R.drawable.icon_hero,R.drawable.icon_shichibukai,
+                    R.drawable.icon_yonkou,R.drawable.icon_king};
 
 
 

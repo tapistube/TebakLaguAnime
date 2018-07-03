@@ -35,6 +35,7 @@ public class GameActivity extends AppCompatActivity {
     Button btnTime,btnNext,btnA,btnB,btnC,btnD;
     int duration = 150000;
     private int skor = 0;
+    private int exp = 0;
     private int currentSoal = 0;
     private int getCoin = 0;
     private int nyawa = 3;
@@ -269,6 +270,7 @@ public class GameActivity extends AppCompatActivity {
         if (getAnswer.equals(mquiz.getJawaban_benar().toUpperCase())){
             skor = skor+10;
             getCoin = getCoin+5;
+            exp = exp + 25;
             suaraJwbBenar();
         }else {
             nyawa = nyawa - 1;
@@ -287,6 +289,8 @@ public class GameActivity extends AppCompatActivity {
             totalSkor = skor;
             Intent i = new Intent(this,ResultActivity.class);
             i.putExtra("kirimSkor",totalSkor);
+            i.putExtra("kirimKoin",getCoin);
+            i.putExtra("kirimExp",exp);
             startActivity(i);
         }
 
@@ -299,6 +303,7 @@ public class GameActivity extends AppCompatActivity {
             Intent i = new Intent(this,ResultActivity.class);
             i.putExtra("kirimSkor",totalSkor);
             i.putExtra("kirimKoin",getCoin);
+            i.putExtra("kirimExp",exp);
             startActivity(i);
         }
     }

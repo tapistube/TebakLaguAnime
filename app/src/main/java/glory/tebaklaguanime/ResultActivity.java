@@ -35,14 +35,14 @@ public class ResultActivity extends AppCompatActivity {
     TextView txtSkor,txtCoin;
     Button btnKeHome,btnShare;
     Intent i;
-    int skor,getCoin;
+    int skor,getCoin,exp;
     DialogInterface.OnClickListener listener;
 
     DBAdapter mDB;
     public static User mUser;
     public static List<User> mlistUser;
     protected Cursor cursor;
-    private int coinNow;
+    private int coinNow,expNow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class ResultActivity extends AppCompatActivity {
         i = getIntent();
         skor = i.getIntExtra("kirimSkor",skor);
         getCoin = i.getIntExtra("kirimKoin",getCoin);
+        exp = i.getIntExtra("kirimExp",exp);
         GameActivity.mp.stop();
 
         txtSkor = (TextView) findViewById(R.id.txtSkor);
@@ -65,10 +66,13 @@ public class ResultActivity extends AppCompatActivity {
         mlistUser = mDB.getDataUser();
         mUser = mlistUser.get(0);
         coinNow = mUser.getCoin();
+        expNow = mUser.getExp();
 
         int tambah = coinNow + getCoin;
+        int tambahExp = expNow + exp;
         SQLiteDatabase db = mDB.getWritableDatabase();
         db.execSQL("update tb_user set coin='"+tambah+"' where nama='User'");
+        db.execSQL("update tb_user set exp='"+tambahExp+"' where nama='User'");
 
 
         txtSkor.setText(String.valueOf(skor));
@@ -118,7 +122,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     private void shareBiasa(){
-        String shareBodyText = "Suka Anime ? Yuk Main Tebak Lagu Anime, Donwload di PlayStore Sekarang ! ";
+        String shareBodyText = "Suka Anime ? Yuk Main Tebak Lagu Anime, Download di PlayStore Sekarang ! ";
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Ayo mainkan Tebak lagu Anime!");

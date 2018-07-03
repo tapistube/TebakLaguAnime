@@ -48,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="100"
-                    android:id="@+id/txtCoin"
+                    android:id="@+id/txtHargaCoin"
                     android:layout_marginTop="5dp"
                     android:textColor="#FFFF"
                     android:textSize="18sp"/>
@@ -63,7 +63,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/icon_utama"
+        android:src="@drawable/icon_utama1"
         android:layout_marginTop="10dp"
         android:id="@+id/icon_utama"/>
 
