@@ -10,7 +10,7 @@ public class User {
     private int coin;
     private int exp;
     private int rank;
-    private String free_coin;
+    private int free_coin;
 
     public String getNama() {
         return nama;
@@ -44,11 +44,11 @@ public class User {
         this.rank = rank;
     }
 
-    public String getFree_coin() {
+    public int getFree_coin() {
         return free_coin;
     }
 
-    public void setFree_coin(String free_coin) {
+    public void setFree_coin(int free_coin) {
         this.free_coin = free_coin;
     }
 }

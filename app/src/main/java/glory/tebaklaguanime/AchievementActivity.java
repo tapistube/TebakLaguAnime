@@ -45,28 +45,22 @@ public class AchievementActivity extends AppCompatActivity {
         rank = mUser.getRank();
         txtExp.setText(String.valueOf(expNow));
 
-        switch (rank){
-            case 1 :
-                txtRank.setText("Normies");
-                break;
-            case 2 :
-                txtRank.setText("Adventurer");
-                break;
-            case 3 :
-                txtRank.setText("Captain");
-                break;
-            case 4 :
-                txtRank.setText("Hero");
-                break;
-            case 5 :
-                txtRank.setText("Shichibukai");
-                break;
-            case 6 :
-                txtRank.setText("Yonkou");
-                break;
-            case 7 :
-                txtRank.setText("KING");
-                break;
-        }
+
+                if (expNow<2000) {
+                    txtRank.setText("Normies");
+                }else if (expNow < 3500) {
+                    txtRank.setText("Adventurer");
+                }else if (expNow < 5500) {
+                    txtRank.setText("Captain");
+                }else if (expNow < 8500) {
+                    txtRank.setText("Hero");
+                }else if (expNow < 12000) {
+                    txtRank.setText("Shichibukai");
+                }else if (expNow < 16000) {
+                    txtRank.setText("Yonkou");
+                }else {
+                    txtRank.setText("KING");
+                }
+
     }
 }

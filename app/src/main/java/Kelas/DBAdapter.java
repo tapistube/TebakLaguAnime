@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,10 +15,11 @@ import java.util.List;
  */
 public class DBAdapter extends SQLiteAssetHelper {
 
-    private static final String DB_NAME                 = "db_quiz_ver4_rev2";
+    private static final String DB_NAME                 = "db_quiz_ver4_rev6";
     private static final int        DB_VER                  = 1;
     public static final String TABLE_SOAL              = "tb_soal";
     public static final String TABLE_USER              = "tb_user";
+    public static final String TABLE_WOLF              = "tb_wolf";
     public static final String TABLE_LEVEL              = "tb_level";
     public static final String COL_SOAL_ID             = "id";
     public static final String COL_SOAL_SOAL           = "soal";
@@ -129,7 +131,11 @@ public class DBAdapter extends SQLiteAssetHelper {
 
 
             listSoal.add(quiz);
+
+
+
             }while (cursor.moveToNext());
+
         }
 
         return listSoal;
@@ -158,7 +164,7 @@ public class DBAdapter extends SQLiteAssetHelper {
                 user.setNama(cursor.getString(cursor.getColumnIndexOrThrow(COL_NAMA)));
                 user.setCoin(cursor.getInt(cursor.getColumnIndexOrThrow(COL_COIN)));
                 user.setRank(cursor.getInt(cursor.getColumnIndexOrThrow(COL_RANK)));
-                user.setFree_coin(cursor.getString(cursor.getColumnIndexOrThrow(COL_FREECOIN)));
+                user.setFree_coin(cursor.getInt(cursor.getColumnIndexOrThrow(COL_FREECOIN)));
                 user.setExp(cursor.getInt(cursor.getColumnIndexOrThrow(COL_EXP)));
 
                 listUser.add(user);
@@ -192,6 +198,45 @@ public class DBAdapter extends SQLiteAssetHelper {
         }
 
         return listLevel;
+    }
+
+    public List<Quiz> getAllWolf(){
+
+        List<Quiz> listWolf = new ArrayList<Quiz>();
+
+        Cursor cursor = db.query(TABLE_WOLF,new String[]{
+
+                COL_SOAL_ID,
+                COL_SOAL_SOAL,
+                COL_SOAL_JAWABAN_A,
+                COL_SOAL_JAWABAN_B,
+                COL_SOAL_JAWABAN_C,
+                COL_SOAL_JAWABAN_D,
+                COL_SOAL_JAWABAN_BENAR
+        },null,null,null,null,null);//kenapa ada 5 null ya ?
+
+        if (cursor.moveToFirst()){
+
+
+            do {
+                Quiz quiz = new Quiz();
+
+                quiz.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_SOAL_ID)));
+                quiz.setSoal(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_SOAL)));
+                quiz.setJawaban_a(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_A)));
+                quiz.setJawaban_b(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_B)));
+                quiz.setJawaban_c(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_C)));
+                quiz.setJawaban_d(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_D)));
+                quiz.setJawaban_benar(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_BENAR)));
+
+                listWolf.add(quiz);
+
+            }while (cursor.moveToNext());
+
+        }
+
+
+        return listWolf;
     }
 
 

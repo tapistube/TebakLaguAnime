@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -20,17 +21,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import Kelas.DBAdapter;
 import Kelas.Quiz;
 import Kelas.User;
 
-public class GameActivity extends AppCompatActivity {
+public class WolfActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
     private ObjectAnimator mAnimation;
@@ -59,14 +57,13 @@ public class GameActivity extends AppCompatActivity {
     public static User mUser;
     public static List<User> mlistUser;
     protected Cursor cursor;
-
-    List<Quiz> listSoalShuffle = new ArrayList<Quiz>();
+    private Uri audioUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_wolf);
 
         btnNext = (Button) findViewById(R.id.btnNext);
         btnTime = (Button) findViewById(R.id.btnTime);
@@ -88,10 +85,10 @@ public class GameActivity extends AppCompatActivity {
         mpKoreksi = new MediaPlayer();
 
         mDB = DBAdapter.getInstance(getApplicationContext());
-        mlistQuiz = mDB.getAllSoal();
+        mlistQuiz = mDB.getAllWolf();
         Collections.shuffle(mlistQuiz);
 
-        for (int c=19;c>=10;c--){
+        for (int c=29;c>=10;c--){
             mlistQuiz.remove(c);
         }
 
@@ -174,13 +171,12 @@ public class GameActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // mAnimation.end();
+                // mAnimation.end();
             }
         });
 
         mulaiQuiz();
         mAnimation.start();
-
     }
 
     @Override
@@ -201,12 +197,13 @@ public class GameActivity extends AppCompatActivity {
         mquiz  = mlistQuiz.get(currentSoal);
         imgWrong.setVisibility(View.INVISIBLE);
         imgCorrect.setVisibility(View.INVISIBLE);
-       // mpKoreksi.stop();
+        // mpKoreksi.stop();
 
-      //  textSoal.setText(mquiz.getSoal());
+        //  textSoal.setText(mquiz.getSoal());
 
-        setupAudio();
-        mp = MediaPlayer.create(GameActivity.this,audio);
+        //setupAudio();
+        setupAudioWolf();
+        mp = MediaPlayer.create(WolfActivity.this,audioUri);
 
         mp.start();
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -269,47 +266,20 @@ public class GameActivity extends AppCompatActivity {
             case 9:
                 audio = R.raw.innocence;
                 break;
-
-            case 10:
-                audio = R.raw.sayonara_moontown;
-                break;
-
-            case 11:
-                audio = R.raw.again;
-                break;
-
-            case 12:
-                audio = R.raw.burst_gravity;
-                break;
-
-            case 13:
-                audio = R.raw.chase_the_world;
-                break;
-
-            case 14:
-                audio = R.raw.courage;
-                break;
-
-            case 15:
-                audio = R.raw.kokoro_no_chizu;
-                break;
-
-            case 16:
-                audio = R.raw.megavolt;
-                break;
-
-            case 17:
-                audio = R.raw.rolling_star;
-                break;
-
-            case 18:
-                audio = R.raw.orange;
-                break;
-
-            case 19:
-                audio = R.raw.samurai_heart;
-                break;
         }
+    }
+
+    public void setupAudioWolf(){
+        int c = mquiz.getId() - 1 ;
+        String lokasiAudio = mquiz.getSoal();
+
+        String dataResourceDirectory = "raw";
+        String dataResoruceFilename = lokasiAudio;
+
+        audioUri  =Uri.parse("android.resource://" + getPackageName() + "/" +
+                dataResourceDirectory + "/" + dataResoruceFilename);
+
+       // mp = MediaPlayer.create(WolfActivity.this,uri);
     }
 
     public void nextSoal(){
@@ -317,8 +287,8 @@ public class GameActivity extends AppCompatActivity {
         mp.stop();
         if (getAnswer.equals(mquiz.getJawaban_benar().toUpperCase())){
             skor = skor+10;
-            getCoin = getCoin+5;
-            exp = exp + 25;
+            getCoin = getCoin+6;
+            exp = exp + 28;
             suaraJwbBenar();
         }else {
             nyawa = nyawa - 1;
@@ -339,7 +309,7 @@ public class GameActivity extends AppCompatActivity {
             i.putExtra("kirimSkor",totalSkor);
             i.putExtra("kirimKoin",getCoin);
             i.putExtra("kirimExp",exp);
-            int from = 0;
+            int from = 1;
             i.putExtra("from",from);
             startActivity(i);
         }
@@ -360,7 +330,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void suaraJwbBenar(){
         imgCorrect.setVisibility(View.VISIBLE);
-        mpKoreksi = MediaPlayer.create(GameActivity.this,R.raw.sound_correct);
+        mpKoreksi = MediaPlayer.create(WolfActivity.this,R.raw.sound_correct);
        /* try{
             mpKoreksi.prepare();
         } catch (IOException e) {
@@ -377,7 +347,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void suaraJwbSalah(){
         imgWrong.setVisibility(View.VISIBLE);
-        mpKoreksi = MediaPlayer.create(GameActivity.this,R.raw.sound_wrong);
+        mpKoreksi = MediaPlayer.create(WolfActivity.this,R.raw.sound_wrong);
       /*  try{
             mpKoreksi.prepare();
         } catch (IOException e) {
@@ -422,6 +392,4 @@ public class GameActivity extends AppCompatActivity {
         builder.setNegativeButton("Tidak", listener);
         builder.show();
     }
-
-
 }

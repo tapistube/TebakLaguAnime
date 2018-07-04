@@ -1,10 +1,15 @@
 package Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +23,10 @@ import Kelas.DBAdapter;
 import Kelas.TingkatKesulitan;
 import Kelas.User;
 import glory.tebaklaguanime.GameActivity;
+import glory.tebaklaguanime.LevelActivity;
 import glory.tebaklaguanime.MainActivity;
 import glory.tebaklaguanime.R;
+import glory.tebaklaguanime.WolfActivity;
 
 /**
  * Created by Glory on 03/10/2016.
@@ -32,7 +39,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
     Intent i;
     public static String GpubjudulEdit;
     public static String GpubisiEdit;
-    private int videoKirim;
+    private int coinNow;
     public static ArrayList listDoa;
 
     DBAdapter mDB;
@@ -40,6 +47,9 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
     public static List<TingkatKesulitan> mlistLevel;
     protected Cursor cursor;
     public static String wolf,tiger;
+    DialogInterface.OnClickListener listener;
+    public static User mUser;
+    public static List<User> mlistUser;
 
 
     //dekalrasi buat List nya
@@ -62,9 +72,12 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
         mDB = DBAdapter.getInstance(context.getApplicationContext());
         mlistLevel= mDB.getDataLevel();
         mLevel = mlistLevel.get(0);
+        mlistUser = mDB.getDataUser();
+        mUser = mlistUser.get(0);
 
         wolf = mLevel.getWolf();
         tiger = mLevel.getTiger();
+        coinNow = mUser.getCoin();
 
         //Glist_dari_berita.add("Berita di arraylist1");
     }
@@ -103,7 +116,15 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                 break;
 
             case 1 :
-                holder.txtHargaCoin.setText("500");
+                if (wolf.equals("T")) {
+                    holder.txtHargaCoin.setText("500");
+                    holder.imgCoin.setVisibility(holder.imgCoin.VISIBLE);
+                    holder.imgLock.setVisibility(holder.imgLock.VISIBLE);
+                }else {
+                    holder.imgLock.setVisibility(holder.imgLock.INVISIBLE);
+                    holder.imgCoin.setVisibility(holder.imgCoin.INVISIBLE);
+                    holder.txtHargaCoin.setVisibility(holder.txtHargaCoin.INVISIBLE);
+                }
                 break;
 
             case 2 :
@@ -137,7 +158,48 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                     break;
                 case 1 :
                     MainActivity.bunyiKlik();
-                    Toast.makeText(v.getContext(),"Level Belum Tersedia (Coming Soon)",Toast.LENGTH_SHORT).show();
+
+                    if (wolf.equals("T")){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("Apakan anda ingin membuka Level ini ?");
+                        builder.setCancelable(false);
+
+                        listener = new DialogInterface.OnClickListener()
+                        {
+                            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(which == DialogInterface.BUTTON_POSITIVE){
+
+                                    if (coinNow >= 500) {
+                                        SQLiteDatabase db = mDB.getWritableDatabase();
+                                        db.execSQL("update tb_level set wolf='Y' where id=1");
+
+                                        coinNow = coinNow - 500;
+                                        db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+
+                                        //langsung buka WolfActivity
+                                        i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                                        context.startActivity(i);
+                                    }else {
+                                        Toast.makeText(context.getApplicationContext(),"Coin anda tidak cukup",Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                if(which == DialogInterface.BUTTON_NEGATIVE){
+                                    dialog.cancel();
+                                }
+                            }
+                        };
+                        builder.setPositiveButton("Ya",listener);
+                        builder.setNegativeButton("Tidak", listener);
+                        builder.show();
+                    }else{
+                        i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                        context.startActivity(i);
+                    }
+
+                   // Toast.makeText(v.getContext(),"Level Belum Tersedia (Coming Soon)",Toast.LENGTH_SHORT).show();
                     break;
                 case 2 :
                     MainActivity.bunyiKlik();

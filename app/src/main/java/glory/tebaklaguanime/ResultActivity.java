@@ -43,6 +43,7 @@ public class ResultActivity extends AppCompatActivity {
     public static List<User> mlistUser;
     protected Cursor cursor;
     private int coinNow,expNow;
+    private int from;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,21 @@ public class ResultActivity extends AppCompatActivity {
         skor = i.getIntExtra("kirimSkor",skor);
         getCoin = i.getIntExtra("kirimKoin",getCoin);
         exp = i.getIntExtra("kirimExp",exp);
-        GameActivity.mp.stop();
+        from = i.getIntExtra("from",from);
+
+        if (from == 0){
+            GameActivity.mp.stop();
+        }else  if (from == 1){
+            WolfActivity.mp.stop();
+        }
+      /*  switch (from){
+            case 0 :
+                GameActivity.mp.stop();
+                break;
+            case 1:
+                WolfActivity.mp.stop();
+                break;
+        }*/
 
         txtSkor = (TextView) findViewById(R.id.txtSkor);
         txtCoin = (TextView) findViewById(R.id.txtCoin);

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="glory.tebaklaguanime.WolfActivity"
+    android:background="@color/colorPrimary2">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/line1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rela1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/heart"
+                    android:id="@+id/heart1"/>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/heart"
+                    android:id="@+id/heart2"/>
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/heart"
+                    android:id="@+id/heart3"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/coin"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:id="@+id/txtCoin"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#FFFF"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:id="@+id/progress_bar"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/txtSkor"
+        android:background="@color/kuningGelap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:max="100"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score : 20"
+        android:textSize="18sp"
+        android:id="@+id/txtSkor"
+        android:textColor="#FFFF"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/line1"/>
+
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/progress_bar"
+        android:id="@+id/imgPlay"
+        android:src="@drawable/play"/>
+
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/progress_bar"
+        android:id="@+id/imgCorrect"
+        android:src="@drawable/thumb"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/progress_bar"
+        android:id="@+id/imgWrong"
+        android:visibility="invisible"
+        android:src="@drawable/meh"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/lineBtn"
+        android:layout_below="@+id/imgPlay"
+        android:layout_centerHorizontal="true">
+
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            style="@style/buttonGame"
+            android:text="Jawaban A"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btnJwbA"/>
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            style="@style/buttonGame"
+            android:text="Jawaban B"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btnJwbB"/>
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            style="@style/buttonGame"
+            android:text="Jawaban C"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btnJwbC"/>
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            style="@style/buttonGame"
+            android:text="Jawaban D"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btnJwbD"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/lineBantuan"
+        android:layout_below="@+id/lineBtn"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/buttonGame"
+            android:text="40 Coins"
+            android:layout_marginTop="10dp"
+            android:drawableStart="@drawable/bantuan_time"
+            android:drawableLeft="@drawable/bantuan_time"
+            android:id="@+id/btnTime"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/buttonGame"
+            android:drawableLeft="@drawable/bantuan_next"
+            android:text="50 Coins"
+            android:layout_marginTop="10dp"
+            android:id="@+id/btnNext"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

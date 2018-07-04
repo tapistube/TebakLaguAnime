@@ -115,14 +115,14 @@
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_rank"
+            android:src="@drawable/icon_rank"
             android:layout_weight="0.3"
             />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_achievement"
+            android:src="@drawable/icon_achievement"
             android:id="@+id/imgAchievement"
             android:layout_weight="0.3"
             />
@@ -130,7 +130,7 @@
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@drawable/ic_star"
+            android:src="@drawable/icon_star"
             android:layout_weight="0.3"
             />
 
