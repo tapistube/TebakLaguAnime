@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
@@ -38,9 +40,12 @@ public class WolfActivity extends AppCompatActivity {
     private ObjectAnimator mAnimation;
     Button btnTime,btnNext,btnA,btnB,btnC,btnD;
     int duration = 150000;
+    private long tambahDurasi = 15000;
     private int skor = 0;
     private int exp = 0;
     private int currentSoal = 0;
+    private int cloneCurrentSoal = 0;
+    private int itungNextSoal = 0;
     private int getCoin = 0;
     private int nyawa = 3;
     private String getAnswer,tempSoal;
@@ -92,9 +97,6 @@ public class WolfActivity extends AppCompatActivity {
         mlistQuiz = mDB.getAllWolf();
         Collections.shuffle(mlistQuiz);
 
-        for (int c=29;c>=10;c--){
-            mlistQuiz.remove(c);
-        }
 
         mlistUser = mDB.getDataUser();
         mUser = mlistUser.get(0);
@@ -107,22 +109,22 @@ public class WolfActivity extends AppCompatActivity {
         mAnimation.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
-                Toast.makeText(getApplicationContext(),"Animasi progres mulai",Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getApplicationContext(),"Animasi progres mulai",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                Toast.makeText(getApplicationContext(),"Animasi progres berhenti",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(),"Animasi progres berhenti",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAnimationCancel(Animator animator) {
-                Toast.makeText(getApplicationContext(),"Animasi progres cancel",Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(),"Animasi progres cancel",Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAnimationRepeat(Animator animator) {
-                Toast.makeText(getApplicationContext(),"Animasi progres diulang",Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(),"Animasi progres diulang",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -169,13 +171,55 @@ public class WolfActivity extends AppCompatActivity {
         btnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mAnimation.start();
+                try {
+                    mlistUser = mDB.getDataUser();
+                    mUser = mlistUser.get(0);
+                    int coinNow2 = mUser.getCoin();
+
+                    if (coinNow2>40){
+                        coinNow2 = coinNow2 - 40;
+                        SQLiteDatabase db = mDB.getWritableDatabase();
+                        db.execSQL("update tb_user set coin='"+coinNow2+"' where nama='User'");
+                        txtCoin.setText(String.valueOf(coinNow2));
+
+                        long durasiNow =  mAnimation.getDuration();
+                        durasiNow = durasiNow + tambahDurasi;
+                        mAnimation.setDuration(durasiNow);
+                        Toast.makeText(getApplicationContext(),"Waktu Ditambahkan",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"Coin Tidak Cukup !",Toast.LENGTH_SHORT).show();
+                    }
+
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"Gagal tambah waktu",Toast.LENGTH_SHORT).show();
+                    Log.e("gagal tambah durasi : ",e.toString());
+                }
             }
         });
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // mAnimation.end();
+                mlistUser = mDB.getDataUser();
+                mUser = mlistUser.get(0);
+                int coinNow2 = mUser.getCoin();
+                if (coinNow2>50) {
+
+                    if (cloneCurrentSoal < 3) {
+                        mp.stop();
+                        setupSoal();
+                        cloneCurrentSoal++;
+
+                        coinNow2 = coinNow2 - 50;
+                        SQLiteDatabase db = mDB.getWritableDatabase();
+                        db.execSQL("update tb_user set coin='"+coinNow2+"' where nama='User'");
+                        txtCoin.setText(String.valueOf(coinNow2));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Kesempatan Pass lagu habis", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+                    Toast.makeText(getApplicationContext(),"Coin Tidak Cukup !",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -189,35 +233,35 @@ public class WolfActivity extends AppCompatActivity {
                                  @Override
                                  public void onAdClosed() {
                                      //Kode disini akan di eksekusi saat Iklan Ditutup
-                                     Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
+                                   //  Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
                                      super.onAdClosed();
                                  }
 
                                  @Override
                                  public void onAdFailedToLoad(int i) {
                                      //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
-                                     Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
                                      super.onAdFailedToLoad(i);
                                  }
 
                                  @Override
                                  public void onAdLeftApplication() {
                                      //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
-                                     Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
+                                   //  Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
                                      super.onAdLeftApplication();
                                  }
 
                                  @Override
                                  public void onAdOpened() {
                                      //Kode disini akan di eksekusi saat Pengguna Mengklik Iklan
-                                     Toast.makeText(getApplicationContext(), "Iklan Diklik", Toast.LENGTH_SHORT).show();
+                                   //  Toast.makeText(getApplicationContext(), "Iklan Diklik", Toast.LENGTH_SHORT).show();
                                      super.onAdOpened();
                                  }
 
                                  @Override
                                  public void onAdLoaded() {
                                      //Kode disini akan di eksekusi saat Iklan Selesai Dimuat
-                                     Toast.makeText(getApplicationContext(), "Iklan Selesai Dimuat", Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getApplicationContext(), "Iklan Selesai Dimuat", Toast.LENGTH_SHORT).show();
                                      super.onAdLoaded();
                                  }
 
@@ -331,7 +375,7 @@ public class WolfActivity extends AppCompatActivity {
     }
 
     public void nextSoal(){
-
+        itungNextSoal++;
         mp.stop();
         if (getAnswer.equals(mquiz.getJawaban_benar().toUpperCase())){
             skor = skor+10;
@@ -362,7 +406,7 @@ public class WolfActivity extends AppCompatActivity {
             startActivity(i);
         }
 
-        if (currentSoal<mlistQuiz.size()){
+        if (currentSoal<mlistQuiz.size()  && itungNextSoal < 10){
             setupSoal();
         }else {
             mp.stop();

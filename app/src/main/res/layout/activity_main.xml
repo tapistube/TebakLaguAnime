@@ -132,6 +132,7 @@
             android:layout_height="60dp"
             android:src="@drawable/icon_rank"
             android:layout_weight="0.3"
+            android:id="@+id/imgLeaderboard"
             />
 
         <ImageView

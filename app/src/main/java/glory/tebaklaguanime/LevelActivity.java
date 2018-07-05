@@ -37,35 +37,35 @@ public class LevelActivity extends AppCompatActivity {
                                  @Override
                                  public void onAdClosed() {
                                      //Kode disini akan di eksekusi saat Iklan Ditutup
-                                     Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
+                                  //   Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
                                      super.onAdClosed();
                                  }
 
                                  @Override
                                  public void onAdFailedToLoad(int i) {
                                      //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
-                                     Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
+                                 //    Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
                                      super.onAdFailedToLoad(i);
                                  }
 
                                  @Override
                                  public void onAdLeftApplication() {
                                      //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
-                                     Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
                                      super.onAdLeftApplication();
                                  }
 
                                  @Override
                                  public void onAdOpened() {
                                      //Kode disini akan di eksekusi saat Pengguna Mengklik Iklan
-                                     Toast.makeText(getApplicationContext(), "Iklan Diklik", Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getApplicationContext(), "Iklan Diklik", Toast.LENGTH_SHORT).show();
                                      super.onAdOpened();
                                  }
 
                                  @Override
                                  public void onAdLoaded() {
                                      //Kode disini akan di eksekusi saat Iklan Selesai Dimuat
-                                     Toast.makeText(getApplicationContext(), "Iklan Selesai Dimuat", Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(getApplicationContext(), "Iklan Selesai Dimuat", Toast.LENGTH_SHORT).show();
                                      super.onAdLoaded();
                                  }
 

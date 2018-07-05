@@ -1,5 +1,6 @@
 package glory.tebaklaguanime;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     DialogInterface.OnClickListener listener;
     TextView txtCoin;
     public static MediaPlayer clickSound;
-    ImageView imgAchievement,imgEvent;
+    ImageView imgAchievement,imgEvent,imgLeaderboard;
 
     DBAdapter mDB;
     public static User mUser;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         clickSound = MediaPlayer.create(MainActivity.this,R.raw.pop);
         imgAchievement = (ImageView) findViewById(R.id.imgAchievement);
         imgEvent = (ImageView) findViewById(R.id.heart1);
+        imgLeaderboard = (ImageView) findViewById(R.id.imgLeaderboard);
 
         mDB = DBAdapter.getInstance(getApplicationContext());
         mlistUser = mDB.getDataUser();
@@ -71,14 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bunyiKlik();
-               /* int tesCoin = 100;
-                int coinNow = mUser.getCoin();
-                int tambah = coinNow+tesCoin;
-                SQLiteDatabase db = mDB.getWritableDatabase();
-                db.execSQL("update tb_user set coin='"+tambah+"' where nama='User'");
-
-                refreshTblUser();
-                txtCoin.setText(String.valueOf(mUser.getCoin()));*/
+                finish();
             }
         });
         imgAchievement.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +91,13 @@ public class MainActivity extends AppCompatActivity {
                 OpenFacebookPage();
             }
         });
+        imgLeaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bunyiKlik();
+                openLeaderboardPage();
+            }
+        });
 
 
 
@@ -110,6 +112,35 @@ public class MainActivity extends AppCompatActivity {
 
         // FacebookページのID
         String facebookPageID = "Tebak-Lagu-Anime-2161268944110667";
+
+        // URL
+        String facebookUrl = "https://www.facebook.com/" + facebookPageID;
+
+        // URLスキーム
+        String facebookUrlScheme = "fb://page/" + facebookPageID;
+
+        try {
+            // Facebookアプリのバージョンを取得
+            int versionCode = getPackageManager().getPackageInfo("com.facebook", 0).versionCode;
+
+            if (versionCode >= 3002850) {
+                // Facebook アプリのバージョン 11.0.0.11.23 (3002850) 以上の場合
+                Uri uri = Uri.parse("fb://facewebmodal/f?href=" + facebookUrl);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                // Facebook アプリが古い場合
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            // Facebookアプリがインストールされていない場合は、ブラウザで開く
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)));
+
+        }
+    }
+
+    protected void openLeaderboardPage(){
+        // FacebookページのID
+        String facebookPageID = "notes/tebak-lagu-anime/leaderboard-tebak-lagu-anime/2161745040729724";
 
         // URL
         String facebookUrl = "https://www.facebook.com/" + facebookPageID;
