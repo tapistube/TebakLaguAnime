@@ -20,6 +20,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,12 +132,12 @@ public class GameActivity extends AppCompatActivity {
         imgPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mp.isPlaying()){
+              /*  if (mp.isPlaying()){
                     mp.stop();
                     mp.start();
                 }else {
                     mp.start();
-                }
+                }*/
             }
         });
         btnA.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +184,50 @@ public class GameActivity extends AppCompatActivity {
 
         mulaiQuiz();
         mAnimation.start();
+
+        AdView adView = (AdView) findViewById(R.id.spanduk);
+        adView.loadAd(new AdRequest.Builder().build());
+
+        adView.setAdListener(new AdListener(){
+                                 @Override
+                                 public void onAdClosed() {
+                                     //Kode disini akan di eksekusi saat Iklan Ditutup
+                                     Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
+                                     super.onAdClosed();
+                                 }
+
+                                 @Override
+                                 public void onAdFailedToLoad(int i) {
+                                     //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
+                                     Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
+                                     super.onAdFailedToLoad(i);
+                                 }
+
+                                 @Override
+                                 public void onAdLeftApplication() {
+                                     //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
+                                     Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
+                                     super.onAdLeftApplication();
+                                 }
+
+                                 @Override
+                                 public void onAdOpened() {
+                                     //Kode disini akan di eksekusi saat Pengguna Mengklik Iklan
+                                     Toast.makeText(getApplicationContext(), "Iklan Diklik", Toast.LENGTH_SHORT).show();
+                                     super.onAdOpened();
+                                 }
+
+                                 @Override
+                                 public void onAdLoaded() {
+                                     //Kode disini akan di eksekusi saat Iklan Selesai Dimuat
+                                     Toast.makeText(getApplicationContext(), "Iklan Selesai Dimuat", Toast.LENGTH_SHORT).show();
+                                     super.onAdLoaded();
+                                 }
+
+
+
+                             }
+        );
 
     }
 

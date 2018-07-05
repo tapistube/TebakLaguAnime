@@ -62,7 +62,7 @@
          action required to display activity in share list
                 -->
                 <category android:name="android.intent.category.DEFAULT" />
-                <!--           Make activity default to launch -->
+                <!-- Make activity default to launch -->
                 <!-- Mime type i.e. what can be shared with this activity only image and text -->
                 <data android:mimeType="image/*" />
                 <data android:mimeType="text/*" />
@@ -71,9 +71,11 @@
         <activity
             android:name=".AchievementActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".WolfActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="Wolf"></activity>
+        <activity
+            android:name=".WolfActivity"
+            android:label="Wolf"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EventActivity"></activity>
     </application>
 
 </manifest>

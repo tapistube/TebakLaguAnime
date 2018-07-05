@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Tebak Lagu Anime</string>
     <string name="facebook_app_id">480851635702142</string>
+    <string name="tesUnitAd">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="myUnitID">ca-app-pub-4423840151402908~7168707491</string>
+    <string name="myBannerUnitID">ca-app-pub-4423840151402908/7320750734</string>
+    <string name="myInterUnitID">ca-app-pub-4423840151402908/2405134274</string>
 </resources>

@@ -24,6 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+
 import java.io.File;
 import java.util.List;
 
@@ -44,6 +49,8 @@ public class ResultActivity extends AppCompatActivity {
     protected Cursor cursor;
     private int coinNow,expNow;
     private int from;
+    private InterstitialAd interstitialAd;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +64,18 @@ public class ResultActivity extends AppCompatActivity {
         exp = i.getIntExtra("kirimExp",exp);
         from = i.getIntExtra("from",from);
 
+
         if (from == 0){
-            GameActivity.mp.stop();
+
+            if (GameActivity.mp.isPlaying()){
+                GameActivity.mp.stop();
+            }
+
         }else  if (from == 1){
-            WolfActivity.mp.stop();
+
+            if (WolfActivity.mp.isPlaying()) {
+                WolfActivity.mp.stop();
+            }
         }
       /*  switch (from){
             case 0 :
@@ -109,6 +124,111 @@ public class ResultActivity extends AppCompatActivity {
                 shareBiasa();
             }
         });
+
+        final AdView adView = (AdView) findViewById(R.id.spanduk);
+        adView.loadAd(new AdRequest.Builder().build());
+
+        adView.setAdListener(new AdListener(){
+                                 @Override
+                                 public void onAdClosed() {
+                                     //Kode disini akan di eksekusi saat Iklan Ditutup
+                                     Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
+                                     super.onAdClosed();
+                                 }
+
+                                 @Override
+                                 public void onAdFailedToLoad(int i) {
+                                     //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
+                                     Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
+                                     super.onAdFailedToLoad(i);
+
+                                 }
+
+                                 @Override
+                                 public void onAdLeftApplication() {
+                                     //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
+                                     Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
+                                     super.onAdLeftApplication();
+                                 }
+
+                                 @Override
+                                 public void onAdOpened() {
+                                     //Kode disini akan di eksekusi saat Pengguna Mengklik Iklan
+                                     Toast.makeText(getApplicationContext(), "Iklan Diklik", Toast.LENGTH_SHORT).show();
+                                     super.onAdOpened();
+                                 }
+
+                                 @Override
+                                 public void onAdLoaded() {
+                                     //Kode disini akan di eksekusi saat Iklan Selesai Dimuat
+                                     Toast.makeText(getApplicationContext(), "Iklan Selesai Dimuat", Toast.LENGTH_SHORT).show();
+                                     super.onAdLoaded();
+                                 }
+
+
+
+                             }
+        );
+
+        //Implementasi dan Membuat Objek Interstitial Ads
+        interstitialAd = new InterstitialAd(this);
+        //Masukan ID Unit Iklan Interstitial Kalian Disini
+        interstitialAd.setAdUnitId(String.valueOf(R.string.tesUnitAd));
+        interstitialAd.loadAd(new AdRequest.Builder().build());
+        interstitialAd.show();
+
+        interstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
+                //Kode disini akan di eksekusi saat Iklan Ditutup
+                Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
+                //Setelah ditutup, Iklan akan memuat ulang kembali
+                interstitialAd.loadAd(new AdRequest.Builder().build());
+            }
+
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+                //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
+                Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                super.onAdLeftApplication();
+                //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
+                Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                super.onAdOpened();
+                //Kode disini akan di eksekusi saat Pengguna Mengklik Iklan
+                Toast.makeText(getApplicationContext(), "Iklan Diklik", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                //Kode disini akan di eksekusi saat Iklan Selesai Dimuat
+                Toast.makeText(getApplicationContext(), "Iklan Selesai Dimuat", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+       /* final InterstitialAd mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getResources().getString(R.string.tesUnitAd));
+        AdRequest adRequestInter = new AdRequest.Builder().build();
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                mInterstitialAd.show();
+            }
+        });
+        mInterstitialAd.loadAd(adRequestInter);*/
+
+
     }
 
     private void shareWA(){

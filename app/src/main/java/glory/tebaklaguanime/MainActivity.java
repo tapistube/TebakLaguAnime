@@ -2,9 +2,11 @@ package glory.tebaklaguanime;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     DialogInterface.OnClickListener listener;
     TextView txtCoin;
     public static MediaPlayer clickSound;
-    ImageView imgAchievement;
+    ImageView imgAchievement,imgEvent;
 
     DBAdapter mDB;
     public static User mUser;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         txtCoin = (TextView) findViewById(R.id.txtHargaCoin);
         clickSound = MediaPlayer.create(MainActivity.this,R.raw.pop);
         imgAchievement = (ImageView) findViewById(R.id.imgAchievement);
+        imgEvent = (ImageView) findViewById(R.id.heart1);
 
         mDB = DBAdapter.getInstance(getApplicationContext());
         mlistUser = mDB.getDataUser();
@@ -68,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bunyiKlik();
-                int tesCoin = 100;
+               /* int tesCoin = 100;
                 int coinNow = mUser.getCoin();
                 int tambah = coinNow+tesCoin;
                 SQLiteDatabase db = mDB.getWritableDatabase();
                 db.execSQL("update tb_user set coin='"+tambah+"' where nama='User'");
 
                 refreshTblUser();
-                txtCoin.setText(String.valueOf(mUser.getCoin()));
+                txtCoin.setText(String.valueOf(mUser.getCoin()));*/
             }
         });
         imgAchievement.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        imgEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bunyiKlik();
+                OpenFacebookPage();
+            }
+        });
+
 
 
         String customFont = "font/LemonMilk.otf";
@@ -93,6 +104,36 @@ public class MainActivity extends AppCompatActivity {
         TextView txtA = (TextView) findViewById(R.id.txtA);
         txtA.setTypeface(typeface);
 
+    }
+
+    protected void OpenFacebookPage() {
+
+        // FacebookページのID
+        String facebookPageID = "Tebak-Lagu-Anime-2161268944110667";
+
+        // URL
+        String facebookUrl = "https://www.facebook.com/" + facebookPageID;
+
+        // URLスキーム
+        String facebookUrlScheme = "fb://page/" + facebookPageID;
+
+        try {
+            // Facebookアプリのバージョンを取得
+            int versionCode = getPackageManager().getPackageInfo("com.facebook", 0).versionCode;
+
+            if (versionCode >= 3002850) {
+                // Facebook アプリのバージョン 11.0.0.11.23 (3002850) 以上の場合
+                Uri uri = Uri.parse("fb://facewebmodal/f?href=" + facebookUrl);
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            } else {
+                // Facebook アプリが古い場合
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            // Facebookアプリがインストールされていない場合は、ブラウザで開く
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUrl)));
+
+        }
     }
 
     public void refreshTblUser(){
