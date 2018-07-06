@@ -22,6 +22,10 @@ import android.widget.TextView;
 
 import java.util.Currency;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
@@ -56,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private static final long COUNTER_TIME = 10;
     private static final int GAME_OVER_REWARD = 1;
     private int kesempatanFreeCoin;
+    private ScheduledExecutorService scheduleTaskExecutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,13 +174,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onRewardedVideoAdLeftApplication() {
-                Toast.makeText(getBaseContext(), "Ad left application.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), "Ad left application.", Toast.LENGTH_SHORT).show();
                 muatUlangIklan();
             }
 
             @Override
             public void onRewardedVideoAdFailedToLoad(int i) {
-                Toast.makeText(getBaseContext(), "Ad failed to load.", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getBaseContext(), "Ad failed to load.", Toast.LENGTH_SHORT).show();
                 muatUlangIklan();
             }
         });
@@ -191,12 +196,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
+
+        //Schedule a task to run every 5 seconds (or however long you want)
+        scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                // Do stuff here!
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Update DB Free_coin
+                        SQLiteDatabase db = mDB.getWritableDatabase();
+                        db.execSQL("update tb_user set free_coin='2' where nama='User'");
+                        mlistUser = mDB.getDataUser();
+                        mUser = mlistUser.get(0);
+                        kesempatanFreeCoin = mUser.getFree_coin();
+
+                        muatUlangIklan();
+                    }
+                });
+
+            }
+        }, 0, 1, TimeUnit.HOURS); // or .MINUTES, .HOURS etc.
+
 
     }
 
     private void muatUlangIklan(){
         if (kesempatanFreeCoin>0){
             startGame();
+        }else {
+            Toast.makeText(getBaseContext(), "Kesempatan Habis", Toast.LENGTH_SHORT).show();
         }
     }
 
