@@ -52,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:id="@+id/lineCoin"
                 android:layout_alignParentRight="true">
 
                 <ImageView
@@ -69,6 +70,32 @@
                     android:textSize="18sp"/>
 
             </LinearLayout>
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icon_gift"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/lineCoin"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:visibility="visible"
+                android:id="@+id/imgGift"/>
+
+            <TextView
+                android:id="@+id/txtFreeCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Free Coin"
+                android:layout_below="@+id/imgGift"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="5dp"
+                android:textColor="#FFFF"
+                android:textSize="14sp"
+                android:visibility="visible"
+                android:layout_toRightOf="@+id/txt_b"
+                />
         </RelativeLayout>
     </LinearLayout>
 
