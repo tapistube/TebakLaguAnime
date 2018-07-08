@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class DBAdapter extends SQLiteAssetHelper {
 
-    private static final String DB_NAME                 = "db_quiz_ver4_rev6";
+    private static final String DB_NAME                 = "db_quiz_ver4_rev8";
     private static final int        DB_VER                  = 1;
     public static final String TABLE_SOAL              = "tb_soal";
     public static final String TABLE_USER              = "tb_user";

@@ -8,14 +8,86 @@
     tools:context="glory.tebaklaguanime.LevelActivity"
     android:background="@color/colorPrimary2">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/lineUtama">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rela1">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/lineEvent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/icon_gift"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/lineCoin"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="visible"
+                    android:id="@+id/imgGift"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtFreeCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Free Coin"
+                android:layout_below="@+id/lineEvent"
+                android:textStyle="bold"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="5dp"
+                android:textColor="#FFFF"
+                android:textSize="16sp"
+                android:layout_toRightOf="@+id/txt_b"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/lineCoin"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/coin"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:id="@+id/txtHargaCoin"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#FFFF"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="Pilih Level"
         android:textColor="#FFFF"
+        android:layout_below="@+id/lineUtama"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:textSize="25sp"
         android:id="@+id/txtJudul"/>
 

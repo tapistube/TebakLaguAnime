@@ -68,6 +68,7 @@ public class GameActivity extends AppCompatActivity {
     public static User mUser;
     public static List<User> mlistUser;
     protected Cursor cursor;
+    private AdView adView;
 
     List<Quiz> listSoalShuffle = new ArrayList<Quiz>();
 
@@ -233,7 +234,7 @@ public class GameActivity extends AppCompatActivity {
         mulaiQuiz();
         mAnimation.start();
 
-        AdView adView = (AdView) findViewById(R.id.spanduk);
+        adView = (AdView) findViewById(R.id.spanduk);
         adView.loadAd(new AdRequest.Builder().build());
 
         adView.setAdListener(new AdListener(){
@@ -241,6 +242,7 @@ public class GameActivity extends AppCompatActivity {
                                  public void onAdClosed() {
                                      //Kode disini akan di eksekusi saat Iklan Ditutup
                                     // Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
+                                     muatUlangIklan();
                                      super.onAdClosed();
                                  }
 
@@ -248,6 +250,7 @@ public class GameActivity extends AppCompatActivity {
                                  public void onAdFailedToLoad(int i) {
                                      //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
                                    //  Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
+                                     muatUlangIklan();
                                      super.onAdFailedToLoad(i);
                                  }
 
@@ -255,6 +258,7 @@ public class GameActivity extends AppCompatActivity {
                                  public void onAdLeftApplication() {
                                      //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
                                    //  Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
+                                     muatUlangIklan();
                                      super.onAdLeftApplication();
                                  }
 
@@ -262,6 +266,7 @@ public class GameActivity extends AppCompatActivity {
                                  public void onAdOpened() {
                                      //Kode disini akan di eksekusi saat Pengguna Mengklik Iklan
                                     // Toast.makeText(getApplicationContext(), "Iklan Diklik", Toast.LENGTH_SHORT).show();
+                                     muatUlangIklan();
                                      super.onAdOpened();
                                  }
 
@@ -285,6 +290,10 @@ public class GameActivity extends AppCompatActivity {
             mAnimation.end();
         }
         super.onDestroy();
+    }
+
+    private void muatUlangIklan(){
+        adView.loadAd(new AdRequest.Builder().build());
     }
 
     private void mulaiQuiz(){
@@ -452,6 +461,8 @@ public class GameActivity extends AppCompatActivity {
             i.putExtra("kirimSkor",totalSkor);
             i.putExtra("kirimKoin",getCoin);
             i.putExtra("kirimExp",exp);
+            int from = 0;
+            i.putExtra("from",from);
             startActivity(i);
         }
     }

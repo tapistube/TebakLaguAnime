@@ -16,6 +16,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -52,7 +53,7 @@ public class ResultActivity extends AppCompatActivity {
     private int coinNow,expNow;
     private int from;
     private InterstitialAd interstitialAd;
-
+    private AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +80,10 @@ public class ResultActivity extends AppCompatActivity {
 
             if (WolfActivity.mp.isPlaying()) {
                 WolfActivity.mp.stop();
+                GameActivity.mp.stop();
             }
         }
+
 
         txtSkor = (TextView) findViewById(R.id.txtSkor);
         txtCoin = (TextView) findViewById(R.id.txtCoin);
@@ -121,7 +124,9 @@ public class ResultActivity extends AppCompatActivity {
             }
         });
 
-         AdView adView = (AdView) findViewById(R.id.spanduk);
+        showDialogShare();
+
+        adView = (AdView) findViewById(R.id.spanduk);
         adView.loadAd(new AdRequest.Builder().build());
 
         adView.setAdListener(new AdListener(){
@@ -129,6 +134,7 @@ public class ResultActivity extends AppCompatActivity {
                                  public void onAdClosed() {
                                      //Kode disini akan di eksekusi saat Iklan Ditutup
                                   //   Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
+                                     adView.loadAd(new AdRequest.Builder().build());
                                      super.onAdClosed();
                                  }
 
@@ -136,6 +142,7 @@ public class ResultActivity extends AppCompatActivity {
                                  public void onAdFailedToLoad(int i) {
                                      //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
                                   //   Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
+                                     adView.loadAd(new AdRequest.Builder().build());
                                      super.onAdFailedToLoad(i);
 
                                  }
@@ -144,6 +151,7 @@ public class ResultActivity extends AppCompatActivity {
                                  public void onAdLeftApplication() {
                                      //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
                                     // Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
+                                     adView.loadAd(new AdRequest.Builder().build());
                                      super.onAdLeftApplication();
                                  }
 
@@ -201,6 +209,7 @@ public class ResultActivity extends AppCompatActivity {
                 super.onAdLeftApplication();
                 //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
               //  Toast.makeText(getApplicationContext(), "Interstitial Ditinggalkan", Toast.LENGTH_SHORT).show();
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
 
             @Override
@@ -249,7 +258,8 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     private void shareBiasa(){
-        String shareBodyText = "Suka Anime ? Yuk Main Tebak Lagu Anime, Download di PlayStore Sekarang ! ";
+        String shareBodyText = "Suka Anime ? Yuk Main Tebak Lagu Anime, Download di PlayStore Sekarang ! " +
+                "https://play.google.com/store/apps/details?id=glory.tebaklaguanime&hl=en_US&pageId=none";
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Ayo mainkan Tebak lagu Anime!");
@@ -294,5 +304,32 @@ public class ResultActivity extends AppCompatActivity {
         builder.setPositiveButton("Ya",listener);
         builder.setNegativeButton("Tidak", listener);
         builder.show();
+    }
+
+    private void showDialogShare(){
+        LayoutInflater minlfater = LayoutInflater.from(this);
+        View v = minlfater.inflate(R.layout.custom_dialog_share, null);
+        final android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
+        dialog.setView(v);
+
+        final Button btnDialogShare = (Button) v.findViewById(R.id.btnDialogShare);
+        final Button btnDialogNo = (Button) v.findViewById(R.id.btnDialogNo);
+
+
+        btnDialogShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.bunyiKlik();
+                shareBiasa();
+                dialog.dismiss();
+            }
+        });
+        btnDialogNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mGamePaused;
     private static final long COUNTER_TIME = 10;
     private static final int GAME_OVER_REWARD = 1;
-    private int kesempatanFreeCoin;
+    private int kesempatanFreeCoin,coinNow;
     private ScheduledExecutorService scheduleTaskExecutor;
 
     @Override
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mUser = mlistUser.get(0);
         txtCoin.setText(String.valueOf(mUser.getCoin()));
         kesempatanFreeCoin = mUser.getFree_coin();
+        coinNow = mUser.getCoin();
 
 
 
@@ -134,41 +136,51 @@ public class MainActivity extends AppCompatActivity {
         //code buat ads Video
         imgGift.setVisibility(View.INVISIBLE);
         txtFreeCoin.setVisibility(View.INVISIBLE);
-        MobileAds.initialize(this, getString(R.string.myUnitID));
+        MobileAds.initialize(this, getString(R.string.tesUnitIDVideo));
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getApplicationContext());
 
         mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
-                Toast.makeText(getBaseContext(), "Iklan dimuat", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getBaseContext(), "Iklan dimuat", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRewardedVideoAdOpened() {
-                Toast.makeText(getBaseContext(), "Iklan dibuka.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), "Iklan dibuka.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRewardedVideoStarted() {
-                Toast.makeText(getBaseContext(), "Iklan dimulai.", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getBaseContext(), "Iklan dimulai.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRewardedVideoAdClosed() {
-                Toast.makeText(getBaseContext(), "Iklan ditutup", Toast.LENGTH_SHORT).show();
+
                 muatUlangIklan();
             }
 
             @Override
             public void onRewarded(RewardItem rewardItem) {
-                Toast.makeText(getBaseContext(), "Anda berhasil mendapatkan coin.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Anda berhasil mendapatkan 40 coin.", Toast.LENGTH_SHORT).show();
                 kesempatanFreeCoin = kesempatanFreeCoin - 1;
+
                 SQLiteDatabase db = mDB.getWritableDatabase();
                 db.execSQL("update tb_user set free_coin='"+kesempatanFreeCoin+"' where nama='User'");
                 mlistUser = mDB.getDataUser();
                 mUser = mlistUser.get(0);
                 kesempatanFreeCoin = mUser.getFree_coin();
 
+                coinNow = coinNow + 40;
+                SQLiteDatabase db2 = mDB.getWritableDatabase();
+                db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+                mlistUser = mDB.getDataUser();
+                mUser = mlistUser.get(0);
+                coinNow = mUser.getCoin();
+                txtCoin.setText(String.valueOf(coinNow));
+
+                Log.d("kesempatan Free main : ",String.valueOf(kesempatanFreeCoin));
                 muatUlangIklan();
             }
 
@@ -186,13 +198,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (kesempatanFreeCoin>0){
-            startGame();
+           // startGame();
+            gameOver();
         }
         imgGift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 bunyiKlik();
                 showRewardedVideo();
+                Log.d("kese pas klik main  : ",String.valueOf(kesempatanFreeCoin));
             }
         });
 
@@ -219,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
             }
-        }, 0, 1, TimeUnit.HOURS); // or .MINUTES, .HOURS etc.
+        }, 0, 2, TimeUnit.HOURS); // or .MINUTES, .HOURS etc.
 
 
     }
@@ -228,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         if (kesempatanFreeCoin>0){
             startGame();
         }else {
-            Toast.makeText(getBaseContext(), "Kesempatan Habis", Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -267,12 +281,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void gameOver() {
 
-        if (mRewardedVideoAd.isLoaded()) {
-            imgGift.setVisibility(View.VISIBLE);
-            txtFreeCoin.setVisibility(View.VISIBLE);
-        }
+        mDB = DBAdapter.getInstance(getApplicationContext());
+        mlistUser = mDB.getDataUser();
+        mUser = mlistUser.get(0);
+        txtCoin.setText(String.valueOf(mUser.getCoin()));
+        kesempatanFreeCoin = mUser.getFree_coin();
 
-        mGameOver = true;
+        if (kesempatanFreeCoin >0 ) {
+            if (mRewardedVideoAd.isLoaded()) {
+                imgGift.setVisibility(View.VISIBLE);
+                txtFreeCoin.setVisibility(View.VISIBLE);
+            }
+
+            mGameOver = true;
+        }else {
+
+        }
     }
 
     private void showRewardedVideo(){

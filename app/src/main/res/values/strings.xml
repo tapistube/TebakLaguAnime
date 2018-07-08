@@ -5,6 +5,7 @@
     <string name="myUnitID">ca-app-pub-4423840151402908~7168707491</string>
     <string name="myBannerUnitID">ca-app-pub-4423840151402908/7320750734</string>
     <string name="myInterUnitID">ca-app-pub-4423840151402908/2405134274</string>
+    <string name="myVideoRewardUnitID">ca-app-pub-4423840151402908/5996609518</string>
     <string name="tesUnitIDVideo">ca-app-pub-3940256099942544/5224354917</string>
     <string name="tesUnitIDInter">ca-app-pub-3940256099942544/1033173712</string>
 </resources>

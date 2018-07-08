@@ -112,11 +112,12 @@
 
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             style="@style/buttonGame"
             android:layout_marginTop="15dp"
             android:text="Share"
+            android:textSize="19sp"
             android:layout_below="@+id/txtB"
             android:layout_centerHorizontal="true"
             android:padding="5dp"

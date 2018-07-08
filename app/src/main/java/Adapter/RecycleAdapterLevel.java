@@ -11,10 +11,17 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +46,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
     Intent i;
     public static String GpubjudulEdit;
     public static String GpubisiEdit;
-    private int coinNow;
+    private int coinNow,kesempatanFreeCoin;
     public static ArrayList listDoa;
 
     DBAdapter mDB;
@@ -50,6 +57,9 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
     DialogInterface.OnClickListener listener;
     public static User mUser;
     public static List<User> mlistUser;
+
+    private RewardedVideoAd mRewardedVideoAd;
+    private boolean mGameOver;
 
 
     //dekalrasi buat List nya
@@ -78,6 +88,65 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
         wolf = mLevel.getWolf();
         tiger = mLevel.getTiger();
         coinNow = mUser.getCoin();
+        kesempatanFreeCoin = mUser.getFree_coin();
+
+        MobileAds.initialize(context.getApplicationContext(), context.getString(R.string.tesUnitIDVideo));
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(context.getApplicationContext());
+        mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened() {
+
+            }
+
+            @Override
+            public void onRewardedVideoStarted() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed() {
+                muatUlangIklan();
+            }
+
+            @Override
+            public void onRewarded(RewardItem rewardItem) {
+                Toast.makeText(context.getApplicationContext(), "Anda berhasil mendapatkan 40 coin.", Toast.LENGTH_SHORT).show();
+                kesempatanFreeCoin = kesempatanFreeCoin - 1;
+
+                SQLiteDatabase db = mDB.getWritableDatabase();
+                db.execSQL("update tb_user set free_coin='"+kesempatanFreeCoin+"' where nama='User'");
+                mlistUser = mDB.getDataUser();
+                mUser = mlistUser.get(0);
+                kesempatanFreeCoin = mUser.getFree_coin();
+
+                coinNow = coinNow + 40;
+                SQLiteDatabase db2 = mDB.getWritableDatabase();
+                db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+                mlistUser = mDB.getDataUser();
+                mUser = mlistUser.get(0);
+                coinNow = mUser.getCoin();
+                LevelActivity.txtCoin.setText(String.valueOf(coinNow));
+
+                Log.d("kesempatan Free adap : ",String.valueOf(kesempatanFreeCoin));
+                muatUlangIklan();
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication() {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad(int i) {
+                muatUlangIklan();
+            }
+        });
+        muatUlangIklan();
 
         //Glist_dari_berita.add("Berita di arraylist1");
     }
@@ -160,6 +229,11 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                     MainActivity.bunyiKlik();
 
                     if (wolf.equals("T")){
+
+
+                        if (coinNow >500){
+
+
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Apakan anda ingin membuka Level ini ?");
                         builder.setCancelable(false);
@@ -194,6 +268,37 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                         builder.setPositiveButton("Ya",listener);
                         builder.setNegativeButton("Tidak", listener);
                         builder.show();
+
+                        }else{
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan free coin dengan menonton video ?");
+                            builder.setCancelable(false);
+
+                            listener = new DialogInterface.OnClickListener()
+                            {
+                                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == DialogInterface.BUTTON_POSITIVE){
+
+                                        if (kesempatanFreeCoin > 0){
+                                            showRewardedVideo();
+                                            Log.d("kese pas klik yes  : ",String.valueOf(kesempatanFreeCoin));
+                                        }else {
+                                            Toast.makeText(context.getApplicationContext(),"Maaf Kesempatan Free Coin anda habis, silakan menunggu 12jam lagi",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    if(which == DialogInterface.BUTTON_NEGATIVE){
+                                        dialog.cancel();
+                                    }
+                                }
+                            };
+                            builder.setPositiveButton("Ya",listener);
+                            builder.setNegativeButton("Tidak", listener);
+                            builder.show();
+                        }
+
                     }else{
                         i = new Intent(context.getApplicationContext(), WolfActivity.class);
                         context.startActivity(i);
@@ -215,6 +320,24 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
         }
     };
 
+
+    public void muatUlangIklan(){
+        mRewardedVideoAd.loadAd(context.getString(R.string.tesUnitIDVideo), new AdRequest.Builder().build());
+    }
+    private void showRewardedVideo(){
+
+        mDB = DBAdapter.getInstance(context.getApplicationContext());
+        mlistUser = mDB.getDataUser();
+        mUser = mlistUser.get(0);
+        kesempatanFreeCoin = mUser.getFree_coin();
+        if (kesempatanFreeCoin>0) {
+            if (mRewardedVideoAd.isLoaded()) {
+                mRewardedVideoAd.show();
+            }
+        }else {
+            Toast.makeText(context.getApplicationContext(),"Maaf Kesempatan Free Coin anda habis, silakan menunggu 12jam lagi",Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public int getItemCount() {
         return namaDoa.length;
