@@ -24,7 +24,7 @@
 
     <style name="MyButton2" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/kuningGelap</item>
-        <item name="colorButtonNormal">@color/cyan</item>
+        <item name="colorButtonNormal">@color/colorAccent2</item>
     </style>
 
     <style name="buttonGame" parent="@android:style/Widget.Button">

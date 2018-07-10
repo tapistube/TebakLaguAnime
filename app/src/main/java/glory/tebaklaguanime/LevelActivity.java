@@ -1,5 +1,7 @@
 package glory.tebaklaguanime;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
@@ -33,6 +35,7 @@ import Kelas.DBAdapter;
 import Kelas.User;
 
 public class LevelActivity extends AppCompatActivity {
+    public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
 
     RecyclerView recyclerLevel;
     RecycleAdapterLevel adapterLevel;
@@ -131,11 +134,12 @@ public class LevelActivity extends AppCompatActivity {
         txtFreeCoin.setVisibility(View.INVISIBLE);
         MobileAds.initialize(this, getString(R.string.tesUnitIDVideo));
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getApplicationContext());
+        mRewardedVideoAd.loadAd(getString(R.string.tesUnitIDVideo), new AdRequest.Builder().build());
 
         mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
-                // Toast.makeText(getBaseContext(), "Iklan dimuat", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Iklan video dimuat", Toast.LENGTH_SHORT).show();
                 //imgGift.setVisibility(View.VISIBLE);
                // txtFreeCoin.setVisibility(View.VISIBLE);
             }
@@ -153,7 +157,6 @@ public class LevelActivity extends AppCompatActivity {
             @Override
             public void onRewardedVideoAdClosed() {
 
-                muatUlangIklan();
             }
 
             @Override
@@ -182,13 +185,12 @@ public class LevelActivity extends AppCompatActivity {
             @Override
             public void onRewardedVideoAdLeftApplication() {
                 //Toast.makeText(getBaseContext(), "Ad left application.", Toast.LENGTH_SHORT).show();
-                muatUlangIklan();
             }
 
             @Override
             public void onRewardedVideoAdFailedToLoad(int i) {
                 // Toast.makeText(getBaseContext(), "Ad failed to load.", Toast.LENGTH_SHORT).show();
-                muatUlangIklan();
+               Log.e("eror video","Code : "+i);
             }
         });
 
@@ -308,5 +310,6 @@ public class LevelActivity extends AppCompatActivity {
     public static void bunyiKlik(){
         clickSound.start();
     }
+
 
 }

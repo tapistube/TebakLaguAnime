@@ -2,6 +2,7 @@ package glory.tebaklaguanime;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -37,6 +38,8 @@ import Kelas.Quiz;
 import Kelas.User;
 
 public class GameActivity extends AppCompatActivity {
+
+    public static final String ARG_REVEAL_START_LOCATION = "reveal_start_location";
 
     ProgressBar progressBar;
     private ObjectAnimator mAnimation;
@@ -289,6 +292,11 @@ public class GameActivity extends AppCompatActivity {
         if (mAnimation.isRunning()){
             mAnimation.end();
         }
+        if (mp != null){
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
         super.onDestroy();
     }
 
@@ -311,6 +319,14 @@ public class GameActivity extends AppCompatActivity {
       //  textSoal.setText(mquiz.getSoal());
 
         setupAudio();
+        if (mp != null){
+            if (mp.isPlaying()){
+                mp.stop();
+            }
+            mp.reset();
+            mp.release();
+            mp = null;
+        }
         mp = MediaPlayer.create(GameActivity.this,audio);
 
         mp.start();
@@ -421,11 +437,16 @@ public class GameActivity extends AppCompatActivity {
 
     public void nextSoal(){
         itungNextSoal++;
-        mp.stop();
+        if (mp != null){
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+       // mp.stop();
         if (getAnswer.equals(mquiz.getJawaban_benar().toUpperCase())){
-            skor = skor+10;
+            skor = skor+6;
             getCoin = getCoin+5;
-            exp = exp + 25;
+            exp = exp + 15;
             suaraJwbBenar();
         }else {
             nyawa = nyawa - 1;
@@ -438,7 +459,12 @@ public class GameActivity extends AppCompatActivity {
         }else if (nyawa == 1){
             imgHeart2.setVisibility(View.INVISIBLE);
         }else if (nyawa == 0){
-            mp.stop();
+           // mp.stop();
+            if (mp != null){
+                mp.stop();
+                mp.release();
+                mp = null;
+            }
             mAnimation.end();
             imgHeart1.setVisibility(View.INVISIBLE);
             totalSkor = skor;
@@ -454,7 +480,12 @@ public class GameActivity extends AppCompatActivity {
         if (currentSoal<mlistQuiz.size() && itungNextSoal < 10){
                 setupSoal();
         }else {
-            mp.stop();
+            //mp.stop();
+            if (mp != null){
+                mp.stop();
+                mp.release();
+                mp = null;
+            }
             mAnimation.end();
             totalSkor = skor;
             Intent i = new Intent(this,ResultActivity.class);
@@ -530,6 +561,16 @@ public class GameActivity extends AppCompatActivity {
         builder.setPositiveButton("Ya",listener);
         builder.setNegativeButton("Tidak", listener);
         builder.show();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mp != null){
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+        super.onPause();
     }
 
 

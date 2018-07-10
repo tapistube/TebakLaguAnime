@@ -1,5 +1,6 @@
 package Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -65,9 +66,10 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
     //dekalrasi buat List nya
     String[] nama ={"Doa 1 ","Doa 2","Doa 3"};
 
-    String[] namaDoa={"Slime","Wolf","Tiger"};
+    String[] namaDoa={"Slime","Wolf","Tiger","Shark","Unicorn","Pegasus"};
 
-    int [] resDoa = {R.drawable.slime,R.drawable.icon_wolf,R.drawable.icon_tiger};
+    int [] resDoa = {R.drawable.slime,R.drawable.icon_wolf,R.drawable.icon_tiger,R.drawable.icon_shark,R.drawable.icon_unicorn,
+            R.drawable.icon_pegasus};
 
 
 
@@ -199,6 +201,16 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
             case 2 :
                 holder.txtHargaCoin.setText("700");
                 break;
+
+            case 3:
+                holder.txtHargaCoin.setText("800");
+                break;
+            case 4:
+                holder.txtHargaCoin.setText("1000");
+                break;
+            case 5:
+                holder.txtHargaCoin.setText("1300");
+                break;
         }
 
         holder.gmbrList.setTag(holder);
@@ -322,7 +334,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
 
 
     public void muatUlangIklan(){
-        mRewardedVideoAd.loadAd(context.getString(R.string.tesUnitIDVideo), new AdRequest.Builder().build());
+        mRewardedVideoAd.loadAd(context.getString(R.string.myVideoRewardUnitID), new AdRequest.Builder().build());
     }
     private void showRewardedVideo(){
 

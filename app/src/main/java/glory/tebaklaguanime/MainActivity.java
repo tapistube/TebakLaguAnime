@@ -1,8 +1,10 @@
 package glory.tebaklaguanime;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Typeface;
@@ -63,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
     private int kesempatanFreeCoin,coinNow;
     private ScheduledExecutorService scheduleTaskExecutor;
 
+    SharedPreferences preferences;
+    public static final String KEYPREF = "Key Preferences";
+    public static final String KEYKesempatanFreeCoin = "Key FreeCoin";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         imgLeaderboard = (ImageView) findViewById(R.id.imgLeaderboard);
         imgGift = (ImageView) findViewById(R.id.imgGift);
         txtFreeCoin = (TextView) findViewById(R.id.txtFreeCoin);
+        preferences = getSharedPreferences(KEYPREF, Context.MODE_PRIVATE);
 
         mDB = DBAdapter.getInstance(getApplicationContext());
         mlistUser = mDB.getDataUser();
@@ -86,13 +93,19 @@ public class MainActivity extends AppCompatActivity {
         kesempatanFreeCoin = mUser.getFree_coin();
         coinNow = mUser.getCoin();
 
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(KEYKesempatanFreeCoin,3);
+        editor.apply();
+       
+
+
 
 
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 bunyiKlik();
-                i = new Intent(getApplicationContext(),LevelActivity.class);
+               i = new Intent(getApplicationContext(),LevelActivity.class);
                 startActivity(i);
             }
         });
@@ -142,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
-               // Toast.makeText(getBaseContext(), "Iklan dimuat", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Iklan dimuat", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -158,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRewardedVideoAdClosed() {
 
-                muatUlangIklan();
             }
 
             @Override
@@ -167,10 +179,10 @@ public class MainActivity extends AppCompatActivity {
                 kesempatanFreeCoin = kesempatanFreeCoin - 1;
 
                 SQLiteDatabase db = mDB.getWritableDatabase();
-                db.execSQL("update tb_user set free_coin='"+kesempatanFreeCoin+"' where nama='User'");
+                /*db.execSQL("update tb_user set free_coin='"+kesempatanFreeCoin+"' where nama='User'");
                 mlistUser = mDB.getDataUser();
                 mUser = mlistUser.get(0);
-                kesempatanFreeCoin = mUser.getFree_coin();
+                kesempatanFreeCoin = mUser.getFree_coin();*/
 
                 coinNow = coinNow + 40;
                 SQLiteDatabase db2 = mDB.getWritableDatabase();
@@ -187,13 +199,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRewardedVideoAdLeftApplication() {
                 //Toast.makeText(getBaseContext(), "Ad left application.", Toast.LENGTH_SHORT).show();
-                muatUlangIklan();
+
             }
 
             @Override
             public void onRewardedVideoAdFailedToLoad(int i) {
                // Toast.makeText(getBaseContext(), "Ad failed to load.", Toast.LENGTH_SHORT).show();
-                muatUlangIklan();
+                Log.e("Error video", "Code " + i);
             }
         });
 

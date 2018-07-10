@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="glory.tebaklaguanime.LevelActivity"
-    android:background="@color/colorPrimary2">
+    android:background="@color/colorPrimary">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,6 +99,7 @@
         android:padding="10dp"
         android:layout_below="@+id/txtJudul"
         android:layout_marginTop="10dp"
+        android:layout_above="@+id/spanduk"
         />
 
     <com.google.android.gms.ads.AdView

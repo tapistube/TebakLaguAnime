@@ -304,6 +304,14 @@ public class WolfActivity extends AppCompatActivity {
 
         //setupAudio();
         setupAudioWolf();
+        if (mp != null){
+            if (mp.isPlaying()){
+                mp.stop();
+            }
+            mp.reset();
+            mp.release();
+            mp = null;
+        }
         mp = MediaPlayer.create(WolfActivity.this,audioUri);
 
         mp.start();
@@ -385,11 +393,19 @@ public class WolfActivity extends AppCompatActivity {
 
     public void nextSoal(){
         itungNextSoal++;
-        mp.stop();
+        //mp.stop();
+        if (mp != null){
+            if (mp.isPlaying()){
+                mp.stop();
+            }
+            mp.reset();
+            mp.release();
+            mp = null;
+        }
         if (getAnswer.equals(mquiz.getJawaban_benar().toUpperCase())){
-            skor = skor+10;
+            skor = skor+7;
             getCoin = getCoin+6;
-            exp = exp + 28;
+            exp = exp + 16;
             suaraJwbBenar();
         }else {
             nyawa = nyawa - 1;
@@ -402,7 +418,15 @@ public class WolfActivity extends AppCompatActivity {
         }else if (nyawa == 1){
             imgHeart2.setVisibility(View.INVISIBLE);
         }else if (nyawa == 0){
-            mp.stop();
+            //mp.stop();
+            if (mp != null){
+                if (mp.isPlaying()){
+                    mp.stop();
+                }
+                mp.reset();
+                mp.release();
+                mp = null;
+            }
             mAnimation.end();
             imgHeart1.setVisibility(View.INVISIBLE);
             totalSkor = skor;
@@ -418,7 +442,15 @@ public class WolfActivity extends AppCompatActivity {
         if (currentSoal<mlistQuiz.size()  && itungNextSoal < 10){
             setupSoal();
         }else {
-            mp.stop();
+           // mp.stop();
+            if (mp != null){
+                if (mp.isPlaying()){
+                    mp.stop();
+                }
+                mp.reset();
+                mp.release();
+                mp = null;
+            }
             mAnimation.end();
             totalSkor = skor;
             Intent i = new Intent(this,ResultActivity.class);
@@ -494,5 +526,15 @@ public class WolfActivity extends AppCompatActivity {
         builder.setPositiveButton("Ya",listener);
         builder.setNegativeButton("Tidak", listener);
         builder.show();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mp != null){
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+        super.onPause();
     }
 }

@@ -16,6 +16,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -36,6 +37,7 @@ import java.io.File;
 import java.util.List;
 
 import Kelas.DBAdapter;
+import Kelas.SharedVariable;
 import Kelas.User;
 
 public class ResultActivity extends AppCompatActivity {
@@ -55,6 +57,7 @@ public class ResultActivity extends AppCompatActivity {
     private InterstitialAd interstitialAd;
     private AdView adView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +69,9 @@ public class ResultActivity extends AppCompatActivity {
         getCoin = i.getIntExtra("kirimKoin",getCoin);
         exp = i.getIntExtra("kirimExp",exp);
         from = i.getIntExtra("from",from);
+        SharedVariable.interChance++;
 
-        int  audio2 = R.raw.believe;
+       /* int  audio2 = R.raw.pop;
         GameActivity.mp = MediaPlayer.create(getApplicationContext(),audio2);
         GameActivity.mp.start();
         if (from == 0){
@@ -82,7 +86,7 @@ public class ResultActivity extends AppCompatActivity {
                 WolfActivity.mp.stop();
                 GameActivity.mp.stop();
             }
-        }
+        }*/
 
 
         txtSkor = (TextView) findViewById(R.id.txtSkor);
@@ -134,7 +138,6 @@ public class ResultActivity extends AppCompatActivity {
                                  public void onAdClosed() {
                                      //Kode disini akan di eksekusi saat Iklan Ditutup
                                   //   Toast.makeText(getApplicationContext(), "Iklan Dititup", Toast.LENGTH_SHORT).show();
-                                     adView.loadAd(new AdRequest.Builder().build());
                                      super.onAdClosed();
                                  }
 
@@ -142,7 +145,6 @@ public class ResultActivity extends AppCompatActivity {
                                  public void onAdFailedToLoad(int i) {
                                      //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
                                   //   Toast.makeText(getApplicationContext(), "Iklan Gagal Dimuat", Toast.LENGTH_SHORT).show();
-                                     adView.loadAd(new AdRequest.Builder().build());
                                      super.onAdFailedToLoad(i);
 
                                  }
@@ -151,7 +153,6 @@ public class ResultActivity extends AppCompatActivity {
                                  public void onAdLeftApplication() {
                                      //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
                                     // Toast.makeText(getApplicationContext(), "Iklan Ditinggalkan", Toast.LENGTH_SHORT).show();
-                                     adView.loadAd(new AdRequest.Builder().build());
                                      super.onAdLeftApplication();
                                  }
 
@@ -179,12 +180,7 @@ public class ResultActivity extends AppCompatActivity {
         final InterstitialAd mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getResources().getString(R.string.tesUnitIDInter));//harus make ID unit yang asli baru mau  jir
         AdRequest adRequestInter = new AdRequest.Builder().build();
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                mInterstitialAd.show();
-            }
-        });
+
         mInterstitialAd.loadAd(adRequestInter);
 
         mInterstitialAd.setAdListener(new AdListener(){
@@ -194,12 +190,13 @@ public class ResultActivity extends AppCompatActivity {
                 //Kode disini akan di eksekusi saat Iklan Ditutup
                // Toast.makeText(getApplicationContext(), "Interstitial Dititup", Toast.LENGTH_SHORT).show();
                 //Setelah ditutup, Iklan akan memuat ulang kembali
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
             }
 
             @Override
             public void onAdFailedToLoad(int i) {
                 super.onAdFailedToLoad(i);
+                Log.e("Error inter", "Code " + i);
                 //Kode disini akan di eksekusi saat Iklan Gagal Dimuat
                // Toast.makeText(getApplicationContext(), "Interstitial Gagal Dimuat", Toast.LENGTH_SHORT).show();
             }
@@ -209,7 +206,7 @@ public class ResultActivity extends AppCompatActivity {
                 super.onAdLeftApplication();
                 //Kode disini akan di eksekusi saat Pengguna Meniggalkan Aplikasi/Membuka Aplikasi Lain
               //  Toast.makeText(getApplicationContext(), "Interstitial Ditinggalkan", Toast.LENGTH_SHORT).show();
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
             }
 
             @Override
@@ -221,6 +218,10 @@ public class ResultActivity extends AppCompatActivity {
 
             @Override
             public void onAdLoaded() {
+                if (SharedVariable.interChance % 3 == 0){
+                    mInterstitialAd.show();
+                }
+
                 super.onAdLoaded();
                 //Kode disini akan di eksekusi saat Iklan Selesai Dimuat
                // Toast.makeText(getApplicationContext(), "Interstitial Selesai Dimuat", Toast.LENGTH_SHORT).show();
