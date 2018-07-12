@@ -10,4 +10,7 @@
     <string name="tesUnitIDInter">ca-app-pub-3940256099942544/1033173712</string>
     <string name="achievementWords">Kau pikir sudah berada di puncak ? Ayo cari tau dan bandingkan dengan pemain lain !</string>
     <string name="subscribeToChannel">Selalu cek sosial media kami untuk Event menarik yang sedang berlangsung | @tebaklaguanime</string>
+    <string name="dialogBelumLogin">Anda belum login/belum memiliki akun, Yuk Login dulu untuk menjaga keamanan data anda :)</string>
+
+    <string name="user_profile_photo">http://igcdn-photos-f-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-19/929118_455075441302693_1605108410_a.jpg</string>
 </resources>

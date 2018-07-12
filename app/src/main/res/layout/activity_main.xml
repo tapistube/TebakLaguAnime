@@ -8,11 +8,24 @@
     tools:context="glory.tebaklaguanime.MainActivity"
     android:background="@color/background_color">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/view_feed_toolbar" />
+    </android.support.design.widget.AppBarLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_below="@+id/appBarLayout"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/lineUtama">
+
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,76 +39,11 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="5dp">
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/letter"
-                    android:id="@+id/heart1"/>
+
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtEvent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Event"
-                android:layout_below="@+id/lineEvent"
-                android:textStyle="bold"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="5dp"
-                android:textColor="#FFFF"
-                android:textSize="16sp"
-                android:layout_toRightOf="@+id/txt_b"
-                />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/lineCoin"
-                android:layout_alignParentRight="true">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/coin"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="100"
-                    android:id="@+id/txtHargaCoin"
-                    android:layout_marginTop="5dp"
-                    android:textColor="#FFFF"
-                    android:textSize="18sp"/>
-
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/icon_gift"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/lineCoin"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:visibility="visible"
-                android:id="@+id/imgGift"/>
-
-            <TextView
-                android:id="@+id/txtFreeCoin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Free Coin"
-                android:layout_below="@+id/imgGift"
-                android:textStyle="bold"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="5dp"
-                android:textColor="#FFFF"
-                android:textSize="14sp"
-                android:visibility="visible"
-                android:layout_toRightOf="@+id/txt_b"
-                />
         </RelativeLayout>
     </LinearLayout>
 
@@ -104,21 +52,13 @@
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_below="@+id/lineUtama"
         android:layout_centerHorizontal="true"
         android:src="@drawable/icon_utama1"
         android:layout_marginTop="10dp"
         android:id="@+id/icon_utama"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tebak Lagu Anime"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/icon_utama"
-        android:id="@+id/txtA"
-        android:textSize="18sp"
-        android:textColor="#FFFF"
-        android:textStyle="bold"/>
+
 
     <Button
     android:layout_width="250dp"
@@ -127,7 +67,7 @@
     android:textSize="20sp"
     android:textColor="#FFFF"
     android:theme="@style/MyButton"
-    android:layout_below="@+id/txtA"
+    android:layout_below="@+id/icon_utama"
     android:layout_marginTop="15dp"
     android:layout_centerHorizontal="true"
     android:id="@+id/btnPlay"/>

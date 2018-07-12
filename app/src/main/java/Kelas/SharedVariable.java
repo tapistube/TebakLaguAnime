@@ -6,4 +6,5 @@ package Kelas;
 
 public class SharedVariable {
     public static int interChance = 0;
+    public static int isUserLogged = 0;
 }

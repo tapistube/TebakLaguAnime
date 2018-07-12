@@ -13,10 +13,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -38,17 +42,20 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
+import Kelas.BaseDrawerActivity;
 import Kelas.DBAdapter;
+import Kelas.SharedVariable;
 import Kelas.User;
+import butterknife.BindView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseDrawerActivity {
 
     Button btnPlay,btnExit;
     Intent i;
     DialogInterface.OnClickListener listener;
-    TextView txtCoin,txtFreeCoin;
+    TextView txtCoin;
     public static MediaPlayer clickSound;
-    ImageView imgAchievement,imgEvent,imgLeaderboard,imgGift,imgRate;
+    ImageView imgAchievement,imgLeaderboard,imgRate;
 
     DBAdapter mDB;
     public static User mUser;
@@ -69,34 +76,45 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEYPREF = "Key Preferences";
     public static final String KEYKesempatanFreeCoin = "Key FreeCoin";
 
+    public static final String ACTION_SHOW_LOADING_ITEM = "action_show_loading_item";
+
+    private static final int ANIM_DURATION_TOOLBAR = 300;
+    private static final int ANIM_DURATION_FAB = 400;
+
+
+
+
+    private boolean pendingIntroAnimation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+
         btnPlay = (Button) findViewById(R.id.btnPlay);
         btnExit = (Button) findViewById(R.id.btnExit);
-        txtCoin = (TextView) findViewById(R.id.txtHargaCoin);
         clickSound = MediaPlayer.create(MainActivity.this,R.raw.pop);
         imgAchievement = (ImageView) findViewById(R.id.imgAchievement);
-        imgEvent = (ImageView) findViewById(R.id.heart1);
         imgLeaderboard = (ImageView) findViewById(R.id.imgLeaderboard);
-        imgGift = (ImageView) findViewById(R.id.imgGift);
-        txtFreeCoin = (TextView) findViewById(R.id.txtFreeCoin);
         preferences = getSharedPreferences(KEYPREF, Context.MODE_PRIVATE);
         imgRate = (ImageView) findViewById(R.id.imgRate);
 
         mDB = DBAdapter.getInstance(getApplicationContext());
         mlistUser = mDB.getDataUser();
         mUser = mlistUser.get(0);
-        txtCoin.setText(String.valueOf(mUser.getCoin()));
+
         kesempatanFreeCoin = mUser.getFree_coin();
         coinNow = mUser.getCoin();
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(KEYKesempatanFreeCoin,3);
         editor.apply();
+
+        if (SharedVariable.isUserLogged == 0){
+            showDialogKeLogin();
+        }
        
 
 
@@ -131,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 mlistUser = mDB.getDataUser();
                 mUser = mlistUser.get(0);
                 coinNow = mUser.getCoin();
-                txtCoin.setText(String.valueOf(coinNow));
+              //  txtCoin.setText(String.valueOf(coinNow));
 
             }
         });
@@ -143,13 +161,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        imgEvent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bunyiKlik();
-                OpenFacebookPage();
-            }
-        });
         imgLeaderboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,16 +169,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-        String customFont = "font/LemonMilk.otf";
-        Typeface typeface = Typeface.createFromAsset(getAssets(), customFont);
-        TextView txtA = (TextView) findViewById(R.id.txtA);
-        txtA.setTypeface(typeface);
-
         //code buat ads Video
-        imgGift.setVisibility(View.INVISIBLE);
-        txtFreeCoin.setVisibility(View.INVISIBLE);
         MobileAds.initialize(this, getString(R.string.tesUnitIDVideo));
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getApplicationContext());
 
@@ -209,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 mlistUser = mDB.getDataUser();
                 mUser = mlistUser.get(0);
                 coinNow = mUser.getCoin();
-                txtCoin.setText(String.valueOf(coinNow));
+             //   txtCoin.setText(String.valueOf(coinNow));
 
                 Log.d("kesempatan Free main : ",String.valueOf(kesempatanFreeCoin));
                 muatUlangIklan();
@@ -232,14 +234,6 @@ public class MainActivity extends AppCompatActivity {
            // startGame();
             gameOver();
         }
-        imgGift.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bunyiKlik();
-                showRewardedVideo();
-                Log.d("kese pas klik main  : ",String.valueOf(kesempatanFreeCoin));
-            }
-        });
 
         scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
 
@@ -280,8 +274,7 @@ public class MainActivity extends AppCompatActivity {
     private void startGame() {
         // Hide the retry button and start the timer.
 
-        imgGift.setVisibility(View.INVISIBLE);
-        txtFreeCoin.setVisibility(View.INVISIBLE);
+
         createTimer(COUNTER_TIME);
         mGamePaused = false;
         mGameOver = false;
@@ -315,13 +308,12 @@ public class MainActivity extends AppCompatActivity {
         mDB = DBAdapter.getInstance(getApplicationContext());
         mlistUser = mDB.getDataUser();
         mUser = mlistUser.get(0);
-        txtCoin.setText(String.valueOf(mUser.getCoin()));
+        //txtCoin.setText(String.valueOf(mUser.getCoin()));
         kesempatanFreeCoin = mUser.getFree_coin();
 
         if (kesempatanFreeCoin >0 ) {
             if (mRewardedVideoAd.isLoaded()) {
-                imgGift.setVisibility(View.VISIBLE);
-                txtFreeCoin.setVisibility(View.VISIBLE);
+
             }
 
             mGameOver = true;
@@ -331,8 +323,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showRewardedVideo(){
-        imgGift.setVisibility(View.INVISIBLE);
-        txtFreeCoin.setVisibility(View.INVISIBLE);
+
         if (mRewardedVideoAd.isLoaded()) {
             mRewardedVideoAd.show();
         }
@@ -431,5 +422,17 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Ya",listener);
         builder.setNegativeButton("Tidak", listener);
         builder.show();
+    }
+
+    private void showDialogKeLogin(){
+        LayoutInflater minlfater = LayoutInflater.from(this);
+        View v = minlfater.inflate(R.layout.custom_dialog_goto_login, null);
+        final android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this).create();
+        dialog.setView(v);
+
+        final Button btnDialogKeLogin = (Button) v.findViewById(R.id.btnDialogKeLogin);
+
+
+        dialog.show();
     }
 }
