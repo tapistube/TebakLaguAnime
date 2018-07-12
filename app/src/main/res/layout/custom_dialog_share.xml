@@ -63,6 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="12dp"
+                android:padding="10dp"
+                android:gravity="center"
                 android:text="Ayo Uji Pengetahuan lagu Anime dengan teman mu !"
                 android:textColor="#fff"
                 android:textSize="16sp"

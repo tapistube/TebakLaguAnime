@@ -45,7 +45,7 @@ public class ResultActivity extends AppCompatActivity {
     TextView txtSkor,txtCoin;
     Button btnKeHome,btnShare;
     Intent i;
-    int skor,getCoin,exp;
+    private int skor,getCoin,exp;
     DialogInterface.OnClickListener listener;
 
     DBAdapter mDB;
@@ -315,6 +315,16 @@ public class ResultActivity extends AppCompatActivity {
 
         final Button btnDialogShare = (Button) v.findViewById(R.id.btnDialogShare);
         final Button btnDialogNo = (Button) v.findViewById(R.id.btnDialogNo);
+        final ImageView headerImage = (ImageView) v.findViewById(R.id.header_cover_image);
+        if (skor < 30 ){
+            headerImage.setImageResource(R.drawable.reaksi4);
+        }else if (skor < 60){
+            headerImage.setImageResource(R.drawable.reaksi3);
+        }else if (skor < 80){
+            headerImage.setImageResource(R.drawable.reaksi2);
+        }else {
+            headerImage.setImageResource(R.drawable.reaksi1);
+        }
 
 
         btnDialogShare.setOnClickListener(new View.OnClickListener() {

@@ -15,11 +15,14 @@ import java.util.List;
  */
 public class DBAdapter extends SQLiteAssetHelper {
 
-    private static final String DB_NAME                 = "db_quiz_ver4_rev8";
+    private static final String DB_NAME                 = "db_quiz_ver4_rev11";
     private static final int        DB_VER                  = 1;
     public static final String TABLE_SOAL              = "tb_soal";
     public static final String TABLE_USER              = "tb_user";
     public static final String TABLE_WOLF              = "tb_wolf";
+    public static final String TABLE_TIGER              = "tb_tiger";
+    public static final String TABLE_SHARK              = "tb_shark";
+    public static final String TABLE_UNICORN              = "tb_unicorn";
     public static final String TABLE_LEVEL              = "tb_level";
     public static final String COL_SOAL_ID             = "id";
     public static final String COL_SOAL_SOAL           = "soal";
@@ -39,6 +42,9 @@ public class DBAdapter extends SQLiteAssetHelper {
     //tb_level
     public static final String COL_WOLF           = "wolf";
     public static final String COL_TIGER           = "tiger";
+    public static final String COL_SHARK           = "shark";
+    public static final String COL_UNICORN           = "unicorn";
+    public static final String COL_PEGASUS           = "pegasus";
 
     public static DBAdapter        dbInstance;
     public static SQLiteDatabase db;
@@ -181,7 +187,11 @@ public class DBAdapter extends SQLiteAssetHelper {
         Cursor cursor = db.query(TABLE_LEVEL,new String[]{
 
                 COL_WOLF,
-                COL_TIGER
+                COL_TIGER,
+                COL_SHARK,
+                COL_UNICORN,
+                COL_PEGASUS
+
         },null,null,null,null,null);//kenapa ada 5 null ya ?
 
         if (cursor.moveToFirst()){
@@ -192,6 +202,9 @@ public class DBAdapter extends SQLiteAssetHelper {
 
                 level.setWolf(cursor.getString(cursor.getColumnIndexOrThrow(COL_WOLF)));
                 level.setTiger(cursor.getString(cursor.getColumnIndexOrThrow(COL_TIGER)));
+                level.setShark(cursor.getString(cursor.getColumnIndexOrThrow(COL_SHARK)));
+                level.setUnicorn(cursor.getString(cursor.getColumnIndexOrThrow(COL_UNICORN)));
+                level.setPegasus(cursor.getString(cursor.getColumnIndexOrThrow(COL_PEGASUS)));
 
                 listLevel.add(level);
             }while (cursor.moveToNext());
@@ -237,6 +250,123 @@ public class DBAdapter extends SQLiteAssetHelper {
 
 
         return listWolf;
+    }
+
+    public List<Quiz> getAllTiger(){
+
+        List<Quiz> listTiger = new ArrayList<Quiz>();
+
+        Cursor cursor = db.query(TABLE_TIGER,new String[]{
+
+                COL_SOAL_ID,
+                COL_SOAL_SOAL,
+                COL_SOAL_JAWABAN_A,
+                COL_SOAL_JAWABAN_B,
+                COL_SOAL_JAWABAN_C,
+                COL_SOAL_JAWABAN_D,
+                COL_SOAL_JAWABAN_BENAR
+        },null,null,null,null,null);//kenapa ada 5 null ya ?
+
+        if (cursor.moveToFirst()){
+
+
+            do {
+                Quiz quiz = new Quiz();
+
+                quiz.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_SOAL_ID)));
+                quiz.setSoal(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_SOAL)));
+                quiz.setJawaban_a(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_A)));
+                quiz.setJawaban_b(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_B)));
+                quiz.setJawaban_c(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_C)));
+                quiz.setJawaban_d(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_D)));
+                quiz.setJawaban_benar(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_BENAR)));
+
+                listTiger.add(quiz);
+
+            }while (cursor.moveToNext());
+
+        }
+
+
+        return listTiger;
+    }
+
+    public List<Quiz> getAllShark(){
+
+        List<Quiz> listShark = new ArrayList<Quiz>();
+
+        Cursor cursor = db.query(TABLE_SHARK,new String[]{
+
+                COL_SOAL_ID,
+                COL_SOAL_SOAL,
+                COL_SOAL_JAWABAN_A,
+                COL_SOAL_JAWABAN_B,
+                COL_SOAL_JAWABAN_C,
+                COL_SOAL_JAWABAN_D,
+                COL_SOAL_JAWABAN_BENAR
+        },null,null,null,null,null);//kenapa ada 5 null ya ?
+
+        if (cursor.moveToFirst()){
+
+
+            do {
+                Quiz quiz = new Quiz();
+
+                quiz.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_SOAL_ID)));
+                quiz.setSoal(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_SOAL)));
+                quiz.setJawaban_a(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_A)));
+                quiz.setJawaban_b(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_B)));
+                quiz.setJawaban_c(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_C)));
+                quiz.setJawaban_d(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_D)));
+                quiz.setJawaban_benar(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_BENAR)));
+
+                listShark.add(quiz);
+
+            }while (cursor.moveToNext());
+
+        }
+
+
+        return listShark;
+    }
+
+    public List<Quiz> getAllUnicorn(){
+
+        List<Quiz> listUnicorn = new ArrayList<Quiz>();
+
+        Cursor cursor = db.query(TABLE_UNICORN,new String[]{
+
+                COL_SOAL_ID,
+                COL_SOAL_SOAL,
+                COL_SOAL_JAWABAN_A,
+                COL_SOAL_JAWABAN_B,
+                COL_SOAL_JAWABAN_C,
+                COL_SOAL_JAWABAN_D,
+                COL_SOAL_JAWABAN_BENAR
+        },null,null,null,null,null);//kenapa ada 5 null ya ?
+
+        if (cursor.moveToFirst()){
+
+
+            do {
+                Quiz quiz = new Quiz();
+
+                quiz.setId(cursor.getInt(cursor.getColumnIndexOrThrow(COL_SOAL_ID)));
+                quiz.setSoal(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_SOAL)));
+                quiz.setJawaban_a(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_A)));
+                quiz.setJawaban_b(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_B)));
+                quiz.setJawaban_c(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_C)));
+                quiz.setJawaban_d(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_D)));
+                quiz.setJawaban_benar(cursor.getString(cursor.getColumnIndexOrThrow(COL_SOAL_JAWABAN_BENAR)));
+
+                listUnicorn.add(quiz);
+
+            }while (cursor.moveToNext());
+
+        }
+
+
+        return listUnicorn;
     }
 
 

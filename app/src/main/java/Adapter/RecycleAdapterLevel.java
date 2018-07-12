@@ -54,7 +54,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
     public static TingkatKesulitan mLevel;
     public static List<TingkatKesulitan> mlistLevel;
     protected Cursor cursor;
-    public static String wolf,tiger;
+    public static String wolf,tiger,shark,unicorn,pegasus;
     DialogInterface.OnClickListener listener;
     public static User mUser;
     public static List<User> mlistUser;
@@ -89,66 +89,14 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
 
         wolf = mLevel.getWolf();
         tiger = mLevel.getTiger();
+        shark = mLevel.getShark();
+        unicorn = mLevel.getUnicorn();
+        pegasus = mLevel.getPegasus();
+
         coinNow = mUser.getCoin();
         kesempatanFreeCoin = mUser.getFree_coin();
 
-        MobileAds.initialize(context.getApplicationContext(), context.getString(R.string.tesUnitIDVideo));
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(context.getApplicationContext());
-        mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
-            @Override
-            public void onRewardedVideoAdLoaded() {
 
-            }
-
-            @Override
-            public void onRewardedVideoAdOpened() {
-
-            }
-
-            @Override
-            public void onRewardedVideoStarted() {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdClosed() {
-                muatUlangIklan();
-            }
-
-            @Override
-            public void onRewarded(RewardItem rewardItem) {
-                Toast.makeText(context.getApplicationContext(), "Anda berhasil mendapatkan 40 coin.", Toast.LENGTH_SHORT).show();
-                kesempatanFreeCoin = kesempatanFreeCoin - 1;
-
-                SQLiteDatabase db = mDB.getWritableDatabase();
-                db.execSQL("update tb_user set free_coin='"+kesempatanFreeCoin+"' where nama='User'");
-                mlistUser = mDB.getDataUser();
-                mUser = mlistUser.get(0);
-                kesempatanFreeCoin = mUser.getFree_coin();
-
-                coinNow = coinNow + 40;
-                SQLiteDatabase db2 = mDB.getWritableDatabase();
-                db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
-                mlistUser = mDB.getDataUser();
-                mUser = mlistUser.get(0);
-                coinNow = mUser.getCoin();
-                LevelActivity.txtCoin.setText(String.valueOf(coinNow));
-
-                Log.d("kesempatan Free adap : ",String.valueOf(kesempatanFreeCoin));
-                muatUlangIklan();
-            }
-
-            @Override
-            public void onRewardedVideoAdLeftApplication() {
-
-            }
-
-            @Override
-            public void onRewardedVideoAdFailedToLoad(int i) {
-                muatUlangIklan();
-            }
-        });
-        muatUlangIklan();
 
         //Glist_dari_berita.add("Berita di arraylist1");
     }
@@ -199,17 +147,41 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                 break;
 
             case 2 :
-                holder.txtHargaCoin.setText("700");
+                if (tiger.equals("T")) {
+                    holder.txtHargaCoin.setText("700");
+                    holder.imgCoin.setVisibility(holder.imgCoin.VISIBLE);
+                    holder.imgLock.setVisibility(holder.imgLock.VISIBLE);
+                }else {
+                    holder.imgLock.setVisibility(holder.imgLock.INVISIBLE);
+                    holder.imgCoin.setVisibility(holder.imgCoin.INVISIBLE);
+                    holder.txtHargaCoin.setVisibility(holder.txtHargaCoin.INVISIBLE);
+                }
                 break;
 
             case 3:
-                holder.txtHargaCoin.setText("800");
+                if (shark.equals("T")) {
+                    holder.txtHargaCoin.setText("900");
+                    holder.imgCoin.setVisibility(holder.imgCoin.VISIBLE);
+                    holder.imgLock.setVisibility(holder.imgLock.VISIBLE);
+                }else {
+                    holder.imgLock.setVisibility(holder.imgLock.INVISIBLE);
+                    holder.imgCoin.setVisibility(holder.imgCoin.INVISIBLE);
+                    holder.txtHargaCoin.setVisibility(holder.txtHargaCoin.INVISIBLE);
+                }
                 break;
             case 4:
-                holder.txtHargaCoin.setText("1000");
+                if (unicorn.equals("T")) {
+                    holder.txtHargaCoin.setText("1200");
+                    holder.imgCoin.setVisibility(holder.imgCoin.VISIBLE);
+                    holder.imgLock.setVisibility(holder.imgLock.VISIBLE);
+                }else {
+                    holder.imgLock.setVisibility(holder.imgLock.INVISIBLE);
+                    holder.imgCoin.setVisibility(holder.imgCoin.INVISIBLE);
+                    holder.txtHargaCoin.setVisibility(holder.txtHargaCoin.INVISIBLE);
+                }
                 break;
             case 5:
-                holder.txtHargaCoin.setText("1300");
+                holder.txtHargaCoin.setText("1500");
                 break;
         }
 
@@ -247,7 +219,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
 
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                        builder.setMessage("Apakan anda ingin membuka Level ini ?");
+                        builder.setMessage("Apakah anda ingin membuka Level ini ?");
                         builder.setCancelable(false);
 
                         listener = new DialogInterface.OnClickListener()
@@ -266,6 +238,8 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
 
                                         //langsung buka WolfActivity
                                         i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                                        int levelID = 1;
+                                        i.putExtra("levelID",levelID);
                                         context.startActivity(i);
                                     }else {
                                         Toast.makeText(context.getApplicationContext(),"Coin anda tidak cukup",Toast.LENGTH_SHORT).show();
@@ -293,12 +267,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                 public void onClick(DialogInterface dialog, int which) {
                                     if(which == DialogInterface.BUTTON_POSITIVE){
 
-                                        if (kesempatanFreeCoin > 0){
-                                            showRewardedVideo();
-                                            Log.d("kese pas klik yes  : ",String.valueOf(kesempatanFreeCoin));
-                                        }else {
-                                            Toast.makeText(context.getApplicationContext(),"Maaf Kesempatan Free Coin anda habis, silakan menunggu 12jam lagi",Toast.LENGTH_SHORT).show();
-                                        }
+                                       //intent ke Earn Coin Activity
                                     }
 
                                     if(which == DialogInterface.BUTTON_NEGATIVE){
@@ -313,6 +282,8 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
 
                     }else{
                         i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                        int levelID = 1;
+                        i.putExtra("levelID",levelID);
                         context.startActivity(i);
                     }
 
@@ -320,7 +291,225 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                     break;
                 case 2 :
                     MainActivity.bunyiKlik();
-                    Toast.makeText(v.getContext(),"Level Belum Tersedia (Coming Soon)",Toast.LENGTH_SHORT).show();
+
+                    if (tiger.equals("T")){
+
+                        if (coinNow > 700 ){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Apakah anda ingin membuka Level ini ?");
+                            builder.setCancelable(false);
+
+                            listener = new DialogInterface.OnClickListener()
+                            {
+                                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == DialogInterface.BUTTON_POSITIVE){
+
+                                        if (coinNow >= 700) {
+                                            SQLiteDatabase db = mDB.getWritableDatabase();
+                                            db.execSQL("update tb_level set tiger='Y' where id=1");
+
+                                            coinNow = coinNow - 700;
+                                            db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+
+                                            //langsung buka WolfActivity
+                                            i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                                            int levelID = 2;
+                                            i.putExtra("levelID",levelID);
+                                            context.startActivity(i);
+                                        }else {
+                                            Toast.makeText(context.getApplicationContext(),"Coin anda tidak cukup",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    if(which == DialogInterface.BUTTON_NEGATIVE){
+                                        dialog.cancel();
+                                    }
+                                }
+                            };
+                            builder.setPositiveButton("Ya",listener);
+                            builder.setNegativeButton("Tidak", listener);
+                            builder.show();
+                        }else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan free coin dengan menonton video ?");
+                            builder.setCancelable(false);
+
+                            listener = new DialogInterface.OnClickListener()
+                            {
+                                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == DialogInterface.BUTTON_POSITIVE){
+
+                                        //intent ke Earn Coin Activity
+                                    }
+
+                                    if(which == DialogInterface.BUTTON_NEGATIVE){
+                                        dialog.cancel();
+                                    }
+                                }
+                            };
+                            builder.setPositiveButton("Ya",listener);
+                            builder.setNegativeButton("Tidak", listener);
+                            builder.show();
+                        }
+
+                    }else {
+                        i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                        int levelID = 2;
+                        i.putExtra("levelID",levelID);
+                        context.startActivity(i);
+                    }
+                    break;
+
+                case 3 :
+                    MainActivity.bunyiKlik();
+
+                    if (shark.equals("T")){
+
+                        if (coinNow > 900 ){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Apakah anda ingin membuka Level ini ?");
+                            builder.setCancelable(false);
+
+                            listener = new DialogInterface.OnClickListener()
+                            {
+                                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == DialogInterface.BUTTON_POSITIVE){
+
+                                        if (coinNow >= 700) {
+                                            SQLiteDatabase db = mDB.getWritableDatabase();
+                                            db.execSQL("update tb_level set shark='Y' where id=1");
+
+                                            coinNow = coinNow - 900;
+                                            db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+
+                                            //langsung buka WolfActivity
+                                            i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                                            int levelID = 3;
+                                            i.putExtra("levelID",levelID);
+                                            context.startActivity(i);
+                                        }else {
+                                            Toast.makeText(context.getApplicationContext(),"Coin anda tidak cukup",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    if(which == DialogInterface.BUTTON_NEGATIVE){
+                                        dialog.cancel();
+                                    }
+                                }
+                            };
+                            builder.setPositiveButton("Ya",listener);
+                            builder.setNegativeButton("Tidak", listener);
+                            builder.show();
+                        }else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan free coin dengan menonton video ?");
+                            builder.setCancelable(false);
+
+                            listener = new DialogInterface.OnClickListener()
+                            {
+                                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == DialogInterface.BUTTON_POSITIVE){
+
+                                        //intent ke Earn Coin Activity
+                                    }
+
+                                    if(which == DialogInterface.BUTTON_NEGATIVE){
+                                        dialog.cancel();
+                                    }
+                                }
+                            };
+                            builder.setPositiveButton("Ya",listener);
+                            builder.setNegativeButton("Tidak", listener);
+                            builder.show();
+                        }
+
+                    }else {
+                        i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                        int levelID = 3;
+                        i.putExtra("levelID",levelID);
+                        context.startActivity(i);
+                    }
+                    break;
+
+                case 4 :
+                    if (unicorn.equals("T")){
+
+                        if (coinNow > 1200 ){
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Apakah anda ingin membuka Level ini ?");
+                            builder.setCancelable(false);
+
+                            listener = new DialogInterface.OnClickListener()
+                            {
+                                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == DialogInterface.BUTTON_POSITIVE){
+
+                                        if (coinNow >= 1200) {
+                                            SQLiteDatabase db = mDB.getWritableDatabase();
+                                            db.execSQL("update tb_level set unicorn='Y' where id=1");
+
+                                            coinNow = coinNow - 1200;
+                                            db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+
+                                            //langsung buka WolfActivity
+                                            i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                                            int levelID = 4;
+                                            i.putExtra("levelID",levelID);
+                                            context.startActivity(i);
+                                        }else {
+                                            Toast.makeText(context.getApplicationContext(),"Coin anda tidak cukup",Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    if(which == DialogInterface.BUTTON_NEGATIVE){
+                                        dialog.cancel();
+                                    }
+                                }
+                            };
+                            builder.setPositiveButton("Ya",listener);
+                            builder.setNegativeButton("Tidak", listener);
+                            builder.show();
+                        }else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan free coin dengan menonton video ?");
+                            builder.setCancelable(false);
+
+                            listener = new DialogInterface.OnClickListener()
+                            {
+                                @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if(which == DialogInterface.BUTTON_POSITIVE){
+
+                                        //intent ke Earn Coin Activity
+                                    }
+
+                                    if(which == DialogInterface.BUTTON_NEGATIVE){
+                                        dialog.cancel();
+                                    }
+                                }
+                            };
+                            builder.setPositiveButton("Ya",listener);
+                            builder.setNegativeButton("Tidak", listener);
+                            builder.show();
+                        }
+
+                    }else {
+                        i = new Intent(context.getApplicationContext(), WolfActivity.class);
+                        int levelID = 4;
+                        i.putExtra("levelID",levelID);
+                        context.startActivity(i);
+                    }
                     break;
             }
 
@@ -333,23 +522,6 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
     };
 
 
-    public void muatUlangIklan(){
-        mRewardedVideoAd.loadAd(context.getString(R.string.myVideoRewardUnitID), new AdRequest.Builder().build());
-    }
-    private void showRewardedVideo(){
-
-        mDB = DBAdapter.getInstance(context.getApplicationContext());
-        mlistUser = mDB.getDataUser();
-        mUser = mlistUser.get(0);
-        kesempatanFreeCoin = mUser.getFree_coin();
-        if (kesempatanFreeCoin>0) {
-            if (mRewardedVideoAd.isLoaded()) {
-                mRewardedVideoAd.show();
-            }
-        }else {
-            Toast.makeText(context.getApplicationContext(),"Maaf Kesempatan Free Coin anda habis, silakan menunggu 12jam lagi",Toast.LENGTH_SHORT).show();
-        }
-    }
 
     public int getItemCount() {
         return namaDoa.length;

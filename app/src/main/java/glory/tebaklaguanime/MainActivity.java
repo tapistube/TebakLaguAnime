@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     DialogInterface.OnClickListener listener;
     TextView txtCoin,txtFreeCoin;
     public static MediaPlayer clickSound;
-    ImageView imgAchievement,imgEvent,imgLeaderboard,imgGift;
+    ImageView imgAchievement,imgEvent,imgLeaderboard,imgGift,imgRate;
 
     DBAdapter mDB;
     public static User mUser;
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         imgGift = (ImageView) findViewById(R.id.imgGift);
         txtFreeCoin = (TextView) findViewById(R.id.txtFreeCoin);
         preferences = getSharedPreferences(KEYPREF, Context.MODE_PRIVATE);
+        imgRate = (ImageView) findViewById(R.id.imgRate);
 
         mDB = DBAdapter.getInstance(getApplicationContext());
         mlistUser = mDB.getDataUser();
@@ -99,7 +100,15 @@ public class MainActivity extends AppCompatActivity {
        
 
 
-
+        imgRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bunyiKlik();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=glory.tebaklaguanime"));
+                startActivity(intent);
+            }
+        });
 
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +122,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 bunyiKlik();
-                finish();
+                //finish();
+
+                int getcoin =  100;
+                coinNow = coinNow + getcoin;
+                SQLiteDatabase db = mDB.getWritableDatabase();
+                db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+                mlistUser = mDB.getDataUser();
+                mUser = mlistUser.get(0);
+                coinNow = mUser.getCoin();
+                txtCoin.setText(String.valueOf(coinNow));
+
             }
         });
         imgAchievement.setOnClickListener(new View.OnClickListener() {

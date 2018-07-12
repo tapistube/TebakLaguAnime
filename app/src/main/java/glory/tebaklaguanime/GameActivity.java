@@ -444,9 +444,9 @@ public class GameActivity extends AppCompatActivity {
         }
        // mp.stop();
         if (getAnswer.equals(mquiz.getJawaban_benar().toUpperCase())){
-            skor = skor+6;
-            getCoin = getCoin+5;
-            exp = exp + 15;
+            skor = skor+10;
+            getCoin = getCoin+3;
+            exp = exp + 11;
             suaraJwbBenar();
         }else {
             nyawa = nyawa - 1;

@@ -68,6 +68,7 @@ public class WolfActivity extends AppCompatActivity {
     protected Cursor cursor;
     private Uri audioUri;
     private AdView adView;
+    private int levelID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +95,22 @@ public class WolfActivity extends AppCompatActivity {
         mp = new MediaPlayer();
         mpKoreksi = new MediaPlayer();
 
+        i = getIntent();
+        levelID = i.getIntExtra("levelID",levelID);
+
         mDB = DBAdapter.getInstance(getApplicationContext());
-        mlistQuiz = mDB.getAllWolf();
+        switch (levelID){
+            case 1 : mlistQuiz = mDB.getAllWolf();
+                break;
+            case 2 : mlistQuiz = mDB.getAllTiger();
+                break;
+            case 3: mlistQuiz = mDB.getAllShark();
+                break;
+
+            case 4 : mlistQuiz = mDB.getAllUnicorn();
+                break;
+        }
+      //  mlistQuiz = mDB.getAllWolf();
         Collections.shuffle(mlistQuiz);
 
 
@@ -403,9 +418,9 @@ public class WolfActivity extends AppCompatActivity {
             mp = null;
         }
         if (getAnswer.equals(mquiz.getJawaban_benar().toUpperCase())){
-            skor = skor+7;
-            getCoin = getCoin+6;
-            exp = exp + 16;
+            skor = skor+10;
+            getCoin = getCoin+4;
+            exp = exp + 12;
             suaraJwbBenar();
         }else {
             nyawa = nyawa - 1;
