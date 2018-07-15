@@ -1,9 +1,12 @@
 package glory.tebaklaguanime;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 import Adapter.RecycleAdapterLevel;
 import Kelas.DBAdapter;
+import Kelas.SharedVariable;
 import Kelas.User;
 
 public class LevelActivity extends AppCompatActivity {
@@ -56,6 +60,7 @@ public class LevelActivity extends AppCompatActivity {
     private static final int GAME_OVER_REWARD = 1;
     private int kesempatanFreeCoin,coinNow;
     private ScheduledExecutorService scheduleTaskExecutor;
+    public static boolean isInternetOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +73,15 @@ public class LevelActivity extends AppCompatActivity {
         txtFreeCoin = (TextView) findViewById(R.id.txtFreeCoin);
         clickSound = MediaPlayer.create(LevelActivity.this,R.raw.pop);
 
-        mDB = DBAdapter.getInstance(getApplicationContext());
-        mlistUser = mDB.getDataUser();
-        mUser = mlistUser.get(0);
-        txtCoin.setText(String.valueOf(mUser.getCoin()));
-        kesempatanFreeCoin = mUser.getFree_coin();
-        coinNow = mUser.getCoin();
+
+        txtCoin.setText(String.valueOf(SharedVariable.coin));
+        coinNow = SharedVariable.coin;
 
         recyclerLevel = (RecyclerView) findViewById(R.id.recycler_listlevel);
         adapterLevel = new RecycleAdapterLevel(this);
         recyclerLevel.setAdapter(adapterLevel);
         recyclerLevel.setLayoutManager(new LinearLayoutManager(this));
+        checkConnection();
 
         adView = (AdView) findViewById(R.id.spanduk);
         adView.loadAd(new AdRequest.Builder().build());
@@ -123,11 +126,8 @@ public class LevelActivity extends AppCompatActivity {
                                      super.onAdLoaded();
                                  }
 
-
-
                              }
         );
-
 
         //video ads
         imgGift.setVisibility(View.INVISIBLE);
@@ -310,6 +310,30 @@ public class LevelActivity extends AppCompatActivity {
     public static void bunyiKlik(){
         clickSound.start();
     }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
+    public void checkConnection(){
+
+        if(isOnline()){
+            Toast.makeText(LevelActivity.this, "You are connected to Internet", Toast.LENGTH_SHORT).show();
+            isInternetOn = true;
+        }else{
+            Toast.makeText(LevelActivity.this, "You are not connected to Internet", Toast.LENGTH_SHORT).show();
+            isInternetOn = false;
+        }
+    }
+
+
 
 
 }

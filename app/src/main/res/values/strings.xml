@@ -13,4 +13,8 @@
     <string name="dialogBelumLogin">Anda belum login/belum memiliki akun, Yuk Login dulu untuk menjaga keamanan data anda :)</string>
 
     <string name="user_profile_photo">http://igcdn-photos-f-a.akamaihd.net/hphotos-ak-xpa1/t51.2885-19/929118_455075441302693_1605108410_a.jpg</string>
+    <string-array name="user_photos">
+        <item>https://res.cloudinary.com/tapisdev/image/upload/v1531442590/badgeBetaTester.png</item>
+        <item>https://res.cloudinary.com/tapisdev/image/upload/v1531442590/badgeSkyAngel.png</item>
+    </string-array>
 </resources>

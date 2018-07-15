@@ -106,7 +106,7 @@ public class MainActivity extends BaseDrawerActivity {
         mUser = mlistUser.get(0);
 
         kesempatanFreeCoin = mUser.getFree_coin();
-        coinNow = mUser.getCoin();
+        coinNow = SharedVariable.coin;
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(KEYKesempatanFreeCoin,3);
@@ -144,11 +144,7 @@ public class MainActivity extends BaseDrawerActivity {
 
                 int getcoin =  100;
                 coinNow = coinNow + getcoin;
-                SQLiteDatabase db = mDB.getWritableDatabase();
-                db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
-                mlistUser = mDB.getDataUser();
-                mUser = mlistUser.get(0);
-                coinNow = mUser.getCoin();
+                SharedVariable.coin = coinNow;
               //  txtCoin.setText(String.valueOf(coinNow));
 
             }
@@ -165,7 +161,9 @@ public class MainActivity extends BaseDrawerActivity {
             @Override
             public void onClick(View view) {
                 bunyiKlik();
-                openLeaderboardPage();
+               // openLeaderboardPage();
+                i = new Intent(MainActivity.this,LeaderboardActivity.class);
+                startActivity(i);
             }
         });
 
@@ -431,6 +429,13 @@ public class MainActivity extends BaseDrawerActivity {
         dialog.setView(v);
 
         final Button btnDialogKeLogin = (Button) v.findViewById(R.id.btnDialogKeLogin);
+        btnDialogKeLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                i = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(i);
+            }
+        });
 
 
         dialog.show();

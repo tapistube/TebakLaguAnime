@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <view.RevealBackgroundView
+        android:id="@+id/vRevealBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvUserProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <LinearLayout
+                    android:id="@+id/vUserProfileRoot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/colorPrimary"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:paddingBottom="24dp"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp"
+                    android:paddingTop="64dp"
+                    app:layout_collapseMode="parallax">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipChildren="false">
+
+                        <ImageView
+                            android:id="@+id/ivUserProfilePhoto"
+                            android:layout_width="@dimen/user_profile_avatar_size"
+                            android:layout_height="@dimen/user_profile_avatar_size"
+                            android:layout_marginRight="16dp" />
+
+                        <LinearLayout
+                            android:id="@+id/vUserDetails"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Not Logged in"
+                                android:id="@+id/txtNamaProfil"
+                                android:textColor="#ffffff"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="EXP user"
+                                android:id="@+id/txtExpUser"
+                                android:textColor="#ffffff"
+                                android:textSize="14sp" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tlUserProfileTabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@color/colorAccent2"
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="#5be5ad"
+                    app:tabIndicatorHeight="4dp"
+                    app:tabMode="fixed" />
+
+            </FrameLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+    </android.support.design.widget.CoordinatorLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
+</RelativeLayout>

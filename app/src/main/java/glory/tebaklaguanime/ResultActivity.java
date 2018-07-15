@@ -27,11 +27,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.util.List;
@@ -54,8 +59,10 @@ public class ResultActivity extends AppCompatActivity {
     protected Cursor cursor;
     private int coinNow,expNow;
     private int from;
-    private InterstitialAd interstitialAd;
     private AdView adView;
+    DatabaseReference ref,refUser;
+    private FirebaseAuth fAuth;
+    private FirebaseAuth.AuthStateListener fStateListener;
 
 
     @Override
@@ -63,6 +70,11 @@ public class ResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_result);
+        Firebase.setAndroidContext(this);
+        FirebaseApp.initializeApp(ResultActivity.this);
+        ref = FirebaseDatabase.getInstance().getReference();
+        refUser = ref.child("users");
+        fAuth = FirebaseAuth.getInstance();
 
         i = getIntent();
         skor = i.getIntExtra("kirimSkor",skor);
@@ -70,23 +82,6 @@ public class ResultActivity extends AppCompatActivity {
         exp = i.getIntExtra("kirimExp",exp);
         from = i.getIntExtra("from",from);
         SharedVariable.interChance++;
-
-       /* int  audio2 = R.raw.pop;
-        GameActivity.mp = MediaPlayer.create(getApplicationContext(),audio2);
-        GameActivity.mp.start();
-        if (from == 0){
-
-            if (GameActivity.mp.isPlaying()){
-                GameActivity.mp.stop();
-            }
-
-        }else  if (from == 1){
-
-            if (WolfActivity.mp.isPlaying()) {
-                WolfActivity.mp.stop();
-                GameActivity.mp.stop();
-            }
-        }*/
 
 
         txtSkor = (TextView) findViewById(R.id.txtSkor);
@@ -98,14 +93,27 @@ public class ResultActivity extends AppCompatActivity {
         mDB = DBAdapter.getInstance(getApplicationContext());
         mlistUser = mDB.getDataUser();
         mUser = mlistUser.get(0);
-        coinNow = mUser.getCoin();
-        expNow = mUser.getExp();
+        coinNow = SharedVariable.coin;
+        expNow = SharedVariable.exp;
 
         int tambah = coinNow + getCoin;
         int tambahExp = expNow + exp;
-        SQLiteDatabase db = mDB.getWritableDatabase();
-        db.execSQL("update tb_user set coin='"+tambah+"' where nama='User'");
-        db.execSQL("update tb_user set exp='"+tambahExp+"' where nama='User'");
+
+        try {
+            ref.child("users").child(fAuth.getCurrentUser().getUid()).child("coin").setValue(tambah);
+            ref.child("users").child(fAuth.getCurrentUser().getUid()).child("exp").setValue(tambahExp);
+        }catch (Exception e){
+            Log.d("Eror update user : ",e.toString());
+        }
+        SharedVariable.coin = tambah;
+        SharedVariable.exp = tambahExp;
+
+        //mendapatkan badge king
+        if (SharedVariable.exp >= 16000){
+            refUser.child(fAuth.getCurrentUser().getUid()).child("badges").child("b5").child("b5").setValue("King");
+        } if (SharedVariable.exp >= 48000){
+            refUser.child(fAuth.getCurrentUser().getUid()).child("badges").child("b2").child("b2").setValue("Sky Angel");
+        }
 
 
         txtSkor.setText(String.valueOf(skor));

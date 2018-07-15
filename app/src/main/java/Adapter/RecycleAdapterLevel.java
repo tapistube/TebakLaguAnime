@@ -18,22 +18,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Kelas.DBAdapter;
+import Kelas.SharedVariable;
 import Kelas.TingkatKesulitan;
 import Kelas.User;
 import glory.tebaklaguanime.GameActivity;
 import glory.tebaklaguanime.LevelActivity;
 import glory.tebaklaguanime.MainActivity;
 import glory.tebaklaguanime.R;
+import glory.tebaklaguanime.ResultActivity;
 import glory.tebaklaguanime.WolfActivity;
 
 /**
@@ -61,6 +68,9 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
 
     private RewardedVideoAd mRewardedVideoAd;
     private boolean mGameOver;
+    DatabaseReference ref;
+    private FirebaseAuth fAuth;
+    private FirebaseAuth.AuthStateListener fStateListener;
 
 
     //dekalrasi buat List nya
@@ -81,24 +91,25 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
         inflater = LayoutInflater.from(context);
         this.context = context;
         listDoa = new ArrayList();
+        Firebase.setAndroidContext(this.context);
+        FirebaseApp.initializeApp(context.getApplicationContext());
+        ref = FirebaseDatabase.getInstance().getReference();
+        fAuth = FirebaseAuth.getInstance();
+
+
         mDB = DBAdapter.getInstance(context.getApplicationContext());
         mlistLevel= mDB.getDataLevel();
         mLevel = mlistLevel.get(0);
         mlistUser = mDB.getDataUser();
         mUser = mlistUser.get(0);
 
-        wolf = mLevel.getWolf();
-        tiger = mLevel.getTiger();
-        shark = mLevel.getShark();
-        unicorn = mLevel.getUnicorn();
-        pegasus = mLevel.getPegasus();
+        wolf = SharedVariable.wolf;
+        tiger = SharedVariable.tiger;
+        shark = SharedVariable.shark;
+        unicorn = SharedVariable.unicorn;
+       // pegasus = mLevel.getPegasus();
 
-        coinNow = mUser.getCoin();
-        kesempatanFreeCoin = mUser.getFree_coin();
-
-
-
-        //Glist_dari_berita.add("Berita di arraylist1");
+        coinNow = SharedVariable.coin;
     }
 
 
@@ -174,10 +185,12 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                     holder.txtHargaCoin.setText("1200");
                     holder.imgCoin.setVisibility(holder.imgCoin.VISIBLE);
                     holder.imgLock.setVisibility(holder.imgLock.VISIBLE);
+                    holder.imgHard.setVisibility(holder.imgHard.VISIBLE);
                 }else {
                     holder.imgLock.setVisibility(holder.imgLock.INVISIBLE);
                     holder.imgCoin.setVisibility(holder.imgCoin.INVISIBLE);
                     holder.txtHargaCoin.setVisibility(holder.txtHargaCoin.INVISIBLE);
+                    holder.imgHard.setVisibility(holder.imgHard.VISIBLE);
                 }
                 break;
             case 5:
@@ -230,11 +243,21 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                 if(which == DialogInterface.BUTTON_POSITIVE){
 
                                     if (coinNow >= 500) {
-                                        SQLiteDatabase db = mDB.getWritableDatabase();
-                                        db.execSQL("update tb_level set wolf='Y' where id=1");
+                                        try {
+                                            ref.child("users").child(fAuth.getCurrentUser().getUid()).child("level")
+                                                    .child("wolf").setValue("Y");
+                                        }catch (Exception e){
+                                            Log.d("Eror update user : ",e.toString());
+                                        }
+                                        SharedVariable.wolf = "Y";
 
                                         coinNow = coinNow - 500;
-                                        db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+                                        try {
+                                            ref.child("users").child(fAuth.getCurrentUser().getUid()).child("coin").setValue(coinNow);
+                                        }catch (Exception e){
+                                            Log.d("Eror update user : ",e.toString());
+                                        }
+                                        SharedVariable.coin = coinNow;
 
                                         //langsung buka WolfActivity
                                         i = new Intent(context.getApplicationContext(), WolfActivity.class);
@@ -307,11 +330,21 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                     if(which == DialogInterface.BUTTON_POSITIVE){
 
                                         if (coinNow >= 700) {
-                                            SQLiteDatabase db = mDB.getWritableDatabase();
-                                            db.execSQL("update tb_level set tiger='Y' where id=1");
+                                            try {
+                                                ref.child("users").child(fAuth.getCurrentUser().getUid()).child("level")
+                                                        .child("tiger").setValue("Y");
+                                            }catch (Exception e){
+                                                Log.d("Eror update user : ",e.toString());
+                                            }
+                                            SharedVariable.tiger = "Y";
 
                                             coinNow = coinNow - 700;
-                                            db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+                                            try {
+                                                ref.child("users").child(fAuth.getCurrentUser().getUid()).child("coin").setValue(coinNow);
+                                            }catch (Exception e){
+                                                Log.d("Eror update user : ",e.toString());
+                                            }
+                                            SharedVariable.coin = coinNow;
 
                                             //langsung buka WolfActivity
                                             i = new Intent(context.getApplicationContext(), WolfActivity.class);
@@ -382,11 +415,21 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                     if(which == DialogInterface.BUTTON_POSITIVE){
 
                                         if (coinNow >= 700) {
-                                            SQLiteDatabase db = mDB.getWritableDatabase();
-                                            db.execSQL("update tb_level set shark='Y' where id=1");
+                                            try {
+                                                ref.child("users").child(fAuth.getCurrentUser().getUid()).child("level")
+                                                        .child("shark").setValue("Y");
+                                            }catch (Exception e){
+                                                Log.d("Eror update user : ",e.toString());
+                                            }
+                                            SharedVariable.shark = "Y";
 
                                             coinNow = coinNow - 900;
-                                            db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+                                            try {
+                                                ref.child("users").child(fAuth.getCurrentUser().getUid()).child("coin").setValue(coinNow);
+                                            }catch (Exception e){
+                                                Log.d("Eror update user : ",e.toString());
+                                            }
+                                            SharedVariable.coin = coinNow;
 
                                             //langsung buka WolfActivity
                                             i = new Intent(context.getApplicationContext(), WolfActivity.class);
@@ -455,11 +498,22 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                     if(which == DialogInterface.BUTTON_POSITIVE){
 
                                         if (coinNow >= 1200) {
-                                            SQLiteDatabase db = mDB.getWritableDatabase();
-                                            db.execSQL("update tb_level set unicorn='Y' where id=1");
+                                            try {
+                                                ref.child("users").child(fAuth.getCurrentUser().getUid()).child("level")
+                                                        .child("unicorn").setValue("Y");
+                                            }catch (Exception e){
+                                                Log.d("Eror update user : ",e.toString());
+                                            }
+                                            SharedVariable.unicorn = "Y";
 
                                             coinNow = coinNow - 1200;
-                                            db.execSQL("update tb_user set coin='"+coinNow+"' where nama='User'");
+                                            try {
+                                                ref.child("users").child(fAuth.getCurrentUser().getUid()).child("coin").setValue(coinNow);
+                                            }catch (Exception e){
+                                                Log.d("Eror update user : ",e.toString());
+                                            }
+                                            SharedVariable.coin = coinNow;
+
 
                                             //langsung buka WolfActivity
                                             i = new Intent(context.getApplicationContext(), WolfActivity.class);
@@ -511,13 +565,13 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                         context.startActivity(i);
                     }
                     break;
+
+                case 5:
+                    Toast.makeText(context.getApplicationContext(),"Level belum tersedia (Coming Soon)",Toast.LENGTH_SHORT).show();
+                    break;
             }
 
-
            // Toast.makeText(v.getContext(),"Item diklik "+position,Toast.LENGTH_SHORT).show();
-
-
-
         }
     };
 

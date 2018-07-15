@@ -35,6 +35,7 @@ import java.util.Random;
 
 import Kelas.DBAdapter;
 import Kelas.Quiz;
+import Kelas.SharedVariable;
 import Kelas.User;
 
 public class GameActivity extends AppCompatActivity {
@@ -105,9 +106,7 @@ public class GameActivity extends AppCompatActivity {
         Collections.shuffle(mlistQuiz);
 
 
-        mlistUser = mDB.getDataUser();
-        mUser = mlistUser.get(0);
-        int coinNow = mUser.getCoin();
+        int coinNow = SharedVariable.coin;
         txtCoin.setText(String.valueOf(coinNow));
 
         mAnimation = ObjectAnimator.ofInt(progressBar,"progress",0,100);
@@ -180,15 +179,13 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 try {
-                    mlistUser = mDB.getDataUser();
-                    mUser = mlistUser.get(0);
-                    int coinNow2 = mUser.getCoin();
+
+                    int coinNow2 = SharedVariable.coin;
 
                     if (coinNow2>40){
                         coinNow2 = coinNow2 - 40;
-                        SQLiteDatabase db = mDB.getWritableDatabase();
-                        db.execSQL("update tb_user set coin='"+coinNow2+"' where nama='User'");
                         txtCoin.setText(String.valueOf(coinNow2));
+                        SharedVariable.coin = coinNow2;
 
                         long durasiNow =  mAnimation.getDuration();
                         durasiNow = durasiNow + tambahDurasi;
@@ -211,7 +208,7 @@ public class GameActivity extends AppCompatActivity {
 
                 mlistUser = mDB.getDataUser();
                 mUser = mlistUser.get(0);
-                int coinNow2 = mUser.getCoin();
+                int coinNow2 = SharedVariable.coin;
                 if (coinNow2>50) {
 
                     if (cloneCurrentSoal < 3) {
@@ -220,9 +217,8 @@ public class GameActivity extends AppCompatActivity {
                         cloneCurrentSoal++;
 
                         coinNow2 = coinNow2 - 50;
-                        SQLiteDatabase db = mDB.getWritableDatabase();
-                        db.execSQL("update tb_user set coin='"+coinNow2+"' where nama='User'");
                         txtCoin.setText(String.valueOf(coinNow2));
+                        SharedVariable.coin = coinNow2;
                     } else {
                         Toast.makeText(getApplicationContext(), "Kesempatan Pass lagu habis", Toast.LENGTH_SHORT).show();
                     }

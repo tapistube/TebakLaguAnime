@@ -2,19 +2,19 @@
     <group android:id="@+id/menu_group_1">
 
         <item
-            android:id="@+id/menu_photo_you_liked"
+            android:id="@+id/menu_badge"
             android:icon="@drawable/ic_global_menu_likes"
             android:title="My Badges" />
         <item
-            android:id="@+id/menu_feed"
+            android:id="@+id/menu_top_player"
             android:icon="@drawable/ic_global_menu_feed"
             android:title="Top Player" />
         <item
-            android:id="@+id/menu_direct"
+            android:id="@+id/menu_voucher"
             android:icon="@drawable/ic_global_menu_direct"
             android:title="Voucher" />
         <item
-            android:id="@+id/menu_news"
+            android:id="@+id/menu_event"
             android:icon="@drawable/ic_global_menu_news"
             android:title="Event" />
 
@@ -26,10 +26,10 @@
     </group>
     <group android:id="@+id/menu_group_2">
         <item
-            android:id="@+id/menu_settings"
-            android:title="Settings" />
+            android:id="@+id/menu_login"
+            android:title="Login" />
         <item
-            android:id="@+id/menu_about"
+            android:id="@+id/menu_logout"
             android:title="Logout" />
     </group>
 </menu>
