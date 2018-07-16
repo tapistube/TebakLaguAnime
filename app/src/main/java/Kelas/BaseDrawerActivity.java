@@ -132,7 +132,7 @@ public class BaseDrawerActivity extends BaseActivity implements NavigationView.O
     public void onGlobalMenuHeaderClick(final View v) {
         drawerLayout.closeDrawer(Gravity.LEFT);
 
-        new Handler().postDelayed(new Runnable() {
+      /*  new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 int[] startingLocation = new int[2];
@@ -142,16 +142,18 @@ public class BaseDrawerActivity extends BaseActivity implements NavigationView.O
                 Log.d("startLocation2:",":"+startingLocation[1]);
                 UserProfileActivity.startUserProfileFromLocation(startingLocation, BaseDrawerActivity.this);
                 overridePendingTransition(0, 0);
-                String uId = fAuth.getCurrentUser().getUid();
-                String nama = SharedVariable.nama;
-                int exp = SharedVariable.exp;
-                Intent i = new Intent(getApplicationContext(), UserProfileActivity.class);
-                i.putExtra("uId",uId);
-                i.putExtra("nama",nama);
-                i.putExtra("exp",exp);
-                startActivity(i);
+
             }
-        }, 200);
+        }, 200);*/
+
+        String uId = fAuth.getCurrentUser().getUid();
+        String nama = SharedVariable.nama;
+        int exp = SharedVariable.exp;
+        Intent i = new Intent(getApplicationContext(), UserProfileActivity.class);
+        i.putExtra("uId",uId);
+        i.putExtra("nama",nama);
+        i.putExtra("exp",exp);
+        startActivity(i);
 
     }
 

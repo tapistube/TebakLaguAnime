@@ -180,6 +180,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                 Collections.reverse(list_nama);
                 Collections.reverse(list_icon);
                 Collections.reverse(list_key);
+
             }
 
             @Override

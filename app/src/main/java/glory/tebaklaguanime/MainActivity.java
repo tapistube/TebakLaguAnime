@@ -233,6 +233,7 @@ public class MainActivity extends BaseDrawerActivity {
             gameOver();
         }
 
+
         scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
 
         //Schedule a task to run every 5 seconds (or however long you want)

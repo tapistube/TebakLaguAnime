@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
     DBAdapter mDB;
     public static User mUser;
     public static List<User> mlistUser;
-   private String wolf,tiger,shark,unicorn;
+   private String wolf,tiger,shark,unicorn,src;
     int serverVersionCode = 0;
     DialogInterface.OnClickListener listener;
 
@@ -107,6 +107,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 SharedVariable.isUserLogged = 1;
                 SharedVariable.nama = fAuth.getCurrentUser().getDisplayName();
+
                 mCountDownTimer = new CountDownTimer(time * 1000, 50) {
                     @Override
                     public void onTick(long millisUnitFinished) {
@@ -140,6 +141,23 @@ public class SplashActivity extends AppCompatActivity {
                         SharedVariable.tiger = tiger;
                         SharedVariable.shark = shark;
                         SharedVariable.unicorn = unicorn;
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                ref.child("userReadable").child("badges").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        SharedVariable.list_src_badge.clear();
+                        src = "";
+                        for (DataSnapshot child : dataSnapshot.getChildren()){
+                            src = child.child("src").getValue().toString();
+                            SharedVariable.list_src_badge.add(src);
+                        }
                     }
 
                     @Override

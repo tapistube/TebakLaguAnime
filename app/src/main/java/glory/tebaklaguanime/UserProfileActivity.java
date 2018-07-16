@@ -71,14 +71,16 @@ public class UserProfileActivity extends BaseDrawerActivity implements RevealBac
     @BindView(R.id.txtExpUser)
     TextView txtExpUser;
 
+    //@BindView(R.id.progressBar)
+    public static ProgressBar progressBar;
+
     private int avatarSize,expUser;
     private String profilePhoto;
     private UserProfileAdapter userPhotosAdapter;
     DatabaseReference ref,refUser;
     private FirebaseAuth fAuth;
     private FirebaseAuth.AuthStateListener fStateListener;
-    public static List<String> list_badge = new ArrayList();
-    private String uId,namaUser;
+    public static String uId,namaUser;
     Intent i;
 
     public static void startUserProfileFromLocation(int[] startingLocation, Activity startingActivity) {
@@ -99,6 +101,7 @@ public class UserProfileActivity extends BaseDrawerActivity implements RevealBac
        uId =  i.getStringExtra("uId");
         namaUser = i.getStringExtra("nama");
         expUser = i.getIntExtra("exp",expUser);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
 
 
@@ -129,11 +132,11 @@ public class UserProfileActivity extends BaseDrawerActivity implements RevealBac
         refUser.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                list_badge.clear();
+                //list_badge.clear();
                 for (DataSnapshot child : dataSnapshot.getChildren()){
                     String keyBadge = child.getKey();
-                    list_badge.add(keyBadge);
-                    Toast.makeText(getApplicationContext(),"bagde : "+keyBadge,Toast.LENGTH_SHORT).show();
+                    //list_badge.add(keyBadge);
+                   // Toast.makeText(getApplicationContext(),"bagde : "+keyBadge,Toast.LENGTH_SHORT).show();
                 }
                 vProgressBar.setVisibility(View.GONE);
             }
@@ -217,5 +220,17 @@ public class UserProfileActivity extends BaseDrawerActivity implements RevealBac
         ivUserProfilePhoto.animate().translationY(0).setDuration(300).setStartDelay(100).setInterpolator(INTERPOLATOR);
         vUserDetails.animate().translationY(0).setDuration(300).setStartDelay(200).setInterpolator(INTERPOLATOR);
 
+    }
+
+    @Override
+    protected void onPause() {
+        //UserProfileAdapter.list_badge.clear();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+       // UserProfileAdapter.list_badge.clear();
+        super.onResume();
     }
 }

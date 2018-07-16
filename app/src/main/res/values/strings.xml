@@ -16,5 +16,6 @@
     <string-array name="user_photos">
         <item>https://res.cloudinary.com/tapisdev/image/upload/v1531442590/badgeBetaTester.png</item>
         <item>https://res.cloudinary.com/tapisdev/image/upload/v1531442590/badgeSkyAngel.png</item>
+        <item>https://res.cloudinary.com/tapisdev/image/upload/v1531452721/badgeKing.png</item>
     </string-array>
 </resources>

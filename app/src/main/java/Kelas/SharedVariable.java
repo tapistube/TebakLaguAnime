@@ -20,6 +20,7 @@ public class SharedVariable {
     public static String shark;
     public static String unicorn;
     public static String pegasus;
+    public static List<String> list_src_badge = new ArrayList();
     public static List<String> list_voucher = new ArrayList();
     int [] resDoa = {R.drawable.icon_normies,R.drawable.icon_adventurer,R.drawable.icon_captain,
             R.drawable.icon_hero,R.drawable.icon_shichibukai,
