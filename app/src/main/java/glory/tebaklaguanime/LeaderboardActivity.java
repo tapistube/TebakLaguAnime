@@ -65,6 +65,9 @@ public class LeaderboardActivity extends AppCompatActivity {
     public static  List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
     Button btnRefresh;
     ListView androidListView;
+    public static  ArrayList<String> listBadge = new ArrayList();
+    public static List<ArrayList> listArrayBadge = new ArrayList<>();
+    private String keyBadge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +108,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                 androidListView.setAdapter(simpleAdapter);
             }
         });
+        /*
         androidListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -120,6 +124,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        */
 
     }
 
@@ -161,6 +166,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                 list_nama.clear();
                 list_icon.clear();
                 list_key.clear();
+                listArrayBadge.clear();
                 int expNya = 0;
                 String nama = "kosong";
                 for (DataSnapshot child : dataSnapshot.getChildren()){
@@ -173,6 +179,7 @@ public class LeaderboardActivity extends AppCompatActivity {
                     int icon =  SharedVariable.expToIcon(expNya);
                     list_icon.add(icon);
                     list_key.add(uID);
+
                 }
                 progressBar.setVisibility(View.GONE);
                 Log.d("jml LE : ",""+list_exp.size());
@@ -180,7 +187,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                 Collections.reverse(list_nama);
                 Collections.reverse(list_icon);
                 Collections.reverse(list_key);
-
             }
 
             @Override
@@ -188,6 +194,8 @@ public class LeaderboardActivity extends AppCompatActivity {
 
             }
         });
+
+
 
     }
 }

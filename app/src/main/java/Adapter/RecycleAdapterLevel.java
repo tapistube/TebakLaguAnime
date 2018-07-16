@@ -36,6 +36,7 @@ import Kelas.DBAdapter;
 import Kelas.SharedVariable;
 import Kelas.TingkatKesulitan;
 import Kelas.User;
+import glory.tebaklaguanime.EarnCoinActivity;
 import glory.tebaklaguanime.GameActivity;
 import glory.tebaklaguanime.LevelActivity;
 import glory.tebaklaguanime.MainActivity;
@@ -280,7 +281,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
 
                         }else{
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan free coin dengan menonton video ?");
+                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan beberapa free coin ?");
                             builder.setCancelable(false);
 
                             listener = new DialogInterface.OnClickListener()
@@ -289,7 +290,8 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if(which == DialogInterface.BUTTON_POSITIVE){
-
+                                        i = new Intent(context.getApplicationContext(), EarnCoinActivity.class);
+                                        context.startActivity(i);
                                        //intent ke Earn Coin Activity
                                     }
 
@@ -366,7 +368,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                             builder.show();
                         }else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan free coin dengan menonton video ?");
+                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan beberapa free coin ?");
                             builder.setCancelable(false);
 
                             listener = new DialogInterface.OnClickListener()
@@ -375,7 +377,8 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if(which == DialogInterface.BUTTON_POSITIVE){
-
+                                        i = new Intent(context.getApplicationContext(), EarnCoinActivity.class);
+                                        context.startActivity(i);
                                         //intent ke Earn Coin Activity
                                     }
 
@@ -451,7 +454,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                             builder.show();
                         }else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan free coin dengan menonton video ?");
+                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan beberapa free coin ?");
                             builder.setCancelable(false);
 
                             listener = new DialogInterface.OnClickListener()
@@ -460,7 +463,8 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if(which == DialogInterface.BUTTON_POSITIVE){
-
+                                        i = new Intent(context.getApplicationContext(), EarnCoinActivity.class);
+                                        context.startActivity(i);
                                         //intent ke Earn Coin Activity
                                     }
 
@@ -535,7 +539,7 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                             builder.show();
                         }else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan free coin dengan menonton video ?");
+                            builder.setMessage("Coin anda tidak cukup, ingin mendapatkan beberapa free coin ?");
                             builder.setCancelable(false);
 
                             listener = new DialogInterface.OnClickListener()
@@ -544,7 +548,8 @@ public class RecycleAdapterLevel extends RecyclerView.Adapter<RecycleViewHolderL
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if(which == DialogInterface.BUTTON_POSITIVE){
-
+                                        i = new Intent(context.getApplicationContext(), EarnCoinActivity.class);
+                                        context.startActivity(i);
                                         //intent ke Earn Coin Activity
                                     }
 

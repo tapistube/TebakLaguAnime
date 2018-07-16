@@ -210,23 +210,43 @@ public class UserProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private void bindPhoto(final PhotoViewHolder holder, int position) {
 
-        Picasso.with(context)
-                .load(list_badge.get(position).toString())
-                .resize(cellSize, cellSize)
-                .centerCrop()
-                .into(holder.ivPhoto, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        animatePhoto(holder);
+        if (UserProfileActivity.uId.equals(SharedVariable.uId)){
+            Picasso.with(context)
+                    .load(SharedVariable.list_src_badge_user.get(position).toString())
+                    .resize(cellSize, cellSize)
+                    .centerCrop()
+                    .into(holder.ivPhoto, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            animatePhoto(holder);
 
-                    }
+                        }
 
-                    @Override
-                    public void onError() {
+                        @Override
+                        public void onError() {
 
-                    }
-                });
-        if (lastAnimatedItem < position) lastAnimatedItem = position;
+                        }
+                    });
+            if (lastAnimatedItem < position) lastAnimatedItem = position;
+        }else {
+            Picasso.with(context)
+                    .load(list_badge.get(position).toString())
+                    .resize(cellSize, cellSize)
+                    .centerCrop()
+                    .into(holder.ivPhoto, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            animatePhoto(holder);
+
+                        }
+
+                        @Override
+                        public void onError() {
+
+                        }
+                    });
+            if (lastAnimatedItem < position) lastAnimatedItem = position;
+        }
 
     }
 
@@ -253,8 +273,11 @@ public class UserProfileAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-
-        return list_badge == null ? 0 : list_badge.size();
+        if (UserProfileActivity.uId.equals(SharedVariable.uId)){
+            return SharedVariable.list_src_badge_user.size();
+        }else {
+            return list_badge == null ? 0 : list_badge.size();
+        }
     }
 
     static class PhotoViewHolder extends RecyclerView.ViewHolder {

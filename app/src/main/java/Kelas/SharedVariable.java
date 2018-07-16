@@ -11,16 +11,20 @@ import glory.tebaklaguanime.R;
 
 public class SharedVariable {
     public static int interChance = 0;
+    public static int free_coin = 3;
     public static int isUserLogged = 0;
     public static String nama = "Not Logged in";
     public static int coin;
     public static int exp;
     public static String wolf;
+    public static String uId;
     public static String tiger;
     public static String shark;
     public static String unicorn;
     public static String pegasus;
     public static List<String> list_src_badge = new ArrayList();
+    public static List<String> list_badge_user = new ArrayList();
+    public static List<String> list_src_badge_user = new ArrayList();
     public static List<String> list_voucher = new ArrayList();
     int [] resDoa = {R.drawable.icon_normies,R.drawable.icon_adventurer,R.drawable.icon_captain,
             R.drawable.icon_hero,R.drawable.icon_shichibukai,

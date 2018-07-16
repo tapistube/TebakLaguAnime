@@ -71,6 +71,7 @@ public class MainActivity extends BaseDrawerActivity {
     private static final int GAME_OVER_REWARD = 1;
     private int kesempatanFreeCoin,coinNow;
     private ScheduledExecutorService scheduleTaskExecutor;
+    private String srcBadge;
 
     SharedPreferences preferences;
     public static final String KEYPREF = "Key Preferences";
@@ -166,6 +167,15 @@ public class MainActivity extends BaseDrawerActivity {
                 startActivity(i);
             }
         });
+        if (SharedVariable.list_badge_user.size() != 0){
+            srcBadge = "";
+            SharedVariable.list_src_badge_user.clear();
+            for (int c=0;c<SharedVariable.list_badge_user.size();c++){
+                srcBadge = setBadgeSrc(SharedVariable.list_badge_user.get(c).toString());
+                SharedVariable.list_src_badge_user.add(srcBadge);
+                Log.d("srcJadi[Splash] : ",srcBadge);
+            }
+        }
 
         //code buat ads Video
         MobileAds.initialize(this, getString(R.string.tesUnitIDVideo));
@@ -174,7 +184,7 @@ public class MainActivity extends BaseDrawerActivity {
         mRewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
             @Override
             public void onRewardedVideoAdLoaded() {
-                Toast.makeText(getBaseContext(), "Iklan dimuat", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), "Iklan dimuat", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -231,6 +241,10 @@ public class MainActivity extends BaseDrawerActivity {
         if (kesempatanFreeCoin>0){
            // startGame();
             gameOver();
+        }
+
+        for (int c=0;c<SharedVariable.list_badge_user.size();c++){
+            Log.d("badgeUser :",SharedVariable.list_badge_user.get(c).toString());
         }
 
 
@@ -440,5 +454,36 @@ public class MainActivity extends BaseDrawerActivity {
 
 
         dialog.show();
+    }
+
+    private String setBadgeSrc(String s){
+        String src = "";
+        switch (s){
+            case "b1":
+                src =  SharedVariable.list_src_badge.get(0).toString();
+                break;
+
+            case "b2" :
+                src =  SharedVariable.list_src_badge.get(1).toString();
+                break;
+
+            case "b3" :
+                src =  SharedVariable.list_src_badge.get(2).toString();
+                break;
+
+            case "b4" :
+                src =  SharedVariable.list_src_badge.get(3).toString();
+                break;
+
+            case "b5" :
+                src =  SharedVariable.list_src_badge.get(4).toString();
+                break;
+
+            case "b6" :
+                src =  SharedVariable.list_src_badge.get(5).toString();
+                break;
+
+        }
+        return src;
     }
 }

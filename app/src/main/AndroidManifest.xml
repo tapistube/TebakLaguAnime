@@ -86,8 +86,12 @@
         <activity
             android:name=".LeaderboardActivity"
             android:label="Leaderboard (Season 1)" />
-        <activity android:name=".VoucherActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".VoucherActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EarnCoinActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Earn Coins"></activity>
     </application>
 
 </manifest>

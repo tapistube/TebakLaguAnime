@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
@@ -46,12 +47,12 @@ public class SplashActivity extends AppCompatActivity {
     private static final long time = 3;
     private CountDownTimer mCountDownTimer;
     private long mTimeRemaining;
-    private int coin,exp;
+    private int coin,exp,free_coin;
     private int expInDB;
     DBAdapter mDB;
     public static User mUser;
     public static List<User> mlistUser;
-   private String wolf,tiger,shark,unicorn,src;
+   private String wolf,tiger,shark,unicorn,src,badgeUser,uId;
     int serverVersionCode = 0;
     DialogInterface.OnClickListener listener;
 
@@ -130,10 +131,12 @@ public class SplashActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         coin = (int) dataSnapshot.child("coin").getValue(Integer.class);
                         exp = (int) dataSnapshot.child("exp").getValue(Integer.class);
+                        free_coin = (int) dataSnapshot.child("freeCoin").getValue(Integer.class);
                         wolf = dataSnapshot.child("level").child("wolf").getValue(String.class);
                         tiger = dataSnapshot.child("level").child("tiger").getValue(String.class);
                         shark = dataSnapshot.child("level").child("shark").getValue(String.class);
                         unicorn = dataSnapshot.child("level").child("unicorn").getValue(String.class);
+                        uId = dataSnapshot.getKey();
 
                         SharedVariable.coin = coin;
                         SharedVariable.exp = exp;
@@ -141,6 +144,8 @@ public class SplashActivity extends AppCompatActivity {
                         SharedVariable.tiger = tiger;
                         SharedVariable.shark = shark;
                         SharedVariable.unicorn = unicorn;
+                        SharedVariable.uId = uId;
+                        SharedVariable.free_coin = free_coin;
                     }
 
                     @Override
@@ -153,11 +158,30 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         SharedVariable.list_src_badge.clear();
+
                         src = "";
                         for (DataSnapshot child : dataSnapshot.getChildren()){
                             src = child.child("src").getValue().toString();
                             SharedVariable.list_src_badge.add(src);
                         }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                ref.child("users").child(fAuth.getCurrentUser().getUid()).child("badges").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        SharedVariable.list_badge_user.clear();
+                        badgeUser = "";
+                        for (DataSnapshot child : dataSnapshot.getChildren()){
+                            badgeUser = child.getKey();
+                            SharedVariable.list_badge_user.add(badgeUser);
+                        }
+
                     }
 
                     @Override
@@ -193,4 +217,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

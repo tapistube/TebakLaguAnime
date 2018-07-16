@@ -30,6 +30,7 @@ import java.util.List;
 import butterknife.BindDimen;
 import butterknife.BindString;
 import butterknife.BindView;
+import glory.tebaklaguanime.EarnCoinActivity;
 import glory.tebaklaguanime.LeaderboardActivity;
 import glory.tebaklaguanime.LevelActivity;
 import glory.tebaklaguanime.LoginActivity;
@@ -189,6 +190,9 @@ public class BaseDrawerActivity extends BaseActivity implements NavigationView.O
             startActivity(i);
         }else if (id == R.id.menu_event){
             OpenFacebookPage();
+        } else if (id == R.id.menu_coins){
+            Intent i = new Intent(getApplicationContext(), EarnCoinActivity.class);
+            startActivity(i);
         }
 
         drawerLayout.closeDrawer(Gravity.LEFT);
